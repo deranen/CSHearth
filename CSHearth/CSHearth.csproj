@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{B6B10F8D-3481-4421-9BBD-C44FE3D22F17}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>CSHearth</RootNamespace>
+    <AssemblyName>CSHearth</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\Program.cs" />
+    <Compile Include="src\cshearth\hero\Hero.cs" />
+    <Compile Include="src\cshearth\hero\HeroTag.cs" />
+    <Compile Include="src\cshearth\hero\concrete\JainaProudmoore.cs" />
+    <Compile Include="src\cshearth\hero\concrete\AnduinWrynn.cs" />
+    <Compile Include="src\cshearth\hero\concrete\GarroshHellscream.cs" />
+    <Compile Include="src\cshearth\hero\concrete\Guldan.cs" />
+    <Compile Include="src\cshearth\hero\concrete\MalfurionStormrage.cs" />
+    <Compile Include="src\cshearth\hero\concrete\Rexxar.cs" />
+    <Compile Include="src\cshearth\hero\concrete\Thrall.cs" />
+    <Compile Include="src\cshearth\hero\concrete\UtherLightbringer.cs" />
+    <Compile Include="src\cshearth\hero\concrete\ValeeraSanguinar.cs" />
+    <Compile Include="src\cshearth\deck\Deck.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="src\" />
+    <Folder Include="src\cshearth\" />
+    <Folder Include="src\cshearth\hero\" />
+    <Folder Include="src\cshearth\hero\concrete\" />
+    <Folder Include="src\cshearth\deck\" />
+  </ItemGroup>
+</Project>

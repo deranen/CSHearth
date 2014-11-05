@@ -1,0 +1,15 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="CSHearth/src/cshearth/deck/Deck.cs">
+    <Files>
+      <File FileName="CSHearth/src/cshearth/hero/Hero.cs" Line="1" Column="1" />
+      <File FileName="CSHearth/src/cshearth/hero/HeroTag.cs" Line="1" Column="1" />
+      <File FileName="CSHearth/src/Program.cs" Line="1" Column="1" />
+      <File FileName="CSHearth/src/cshearth/deck/Deck.cs" Line="23" Column="23" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
