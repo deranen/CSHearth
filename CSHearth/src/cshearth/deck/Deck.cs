@@ -44,12 +44,12 @@ namespace CSHearth
 			Random rng = new Random();  
 			int n = Cards.Count;
 
-			while( n > 1 ) {  
-				n--;
-				int k = rng.Next( n + 1 );
-				Card value = Cards[k];
+			while( n > 1 ) {
+				int k = rng.Next( n );
+				--n;
+				Card card = Cards[k];
 				Cards[k] = Cards[n];
-				Cards[n] = value;
+				Cards[n] = card;
 			}
 		}
 	}

@@ -47,6 +47,11 @@
     <Compile Include="src\cshearth\hero\concrete\UtherLightbringer.cs" />
     <Compile Include="src\cshearth\hero\concrete\ValeeraSanguinar.cs" />
     <Compile Include="src\cshearth\deck\Deck.cs" />
+    <Compile Include="src\cshearth\hand\Hand.cs" />
+    <Compile Include="src\cshearth\player\Player.cs" />
+    <Compile Include="src\cshearth\player\PlayerTag.cs" />
+    <Compile Include="src\cshearth\card\Card.cs" />
+    <Compile Include="src\cshearth\GameState.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -55,5 +60,8 @@
     <Folder Include="src\cshearth\hero\" />
     <Folder Include="src\cshearth\hero\concrete\" />
     <Folder Include="src\cshearth\deck\" />
+    <Folder Include="src\cshearth\hand\" />
+    <Folder Include="src\cshearth\player\" />
+    <Folder Include="src\cshearth\card\" />
   </ItemGroup>
 </Project>
