@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace CSHearth
 {
@@ -22,10 +23,11 @@ namespace CSHearth
 
 		public int Cost { get; private set; }
 
-		public bool NeedsTarget    { get; private set; }
-		public bool MustHaveTarget { get; private set; }
+		public bool NeedsBoardPosition { get; private set; }
+		public bool NeedsTarget        { get; private set; }
+		public bool MustHaveTarget     { get; private set; }
 
-		private Card( CardTag tag, CardClass cardClass, CardType cardType, int cost)
+		protected Card( CardTag tag, CardClass cardClass, CardType cardType, int cost)
 		{
 			Id    = Session.GetUniqueId();
 			Tag   = tag;
@@ -33,21 +35,22 @@ namespace CSHearth
 			Type  = cardType;
 			Cost  = cost;
 
-			NeedsTarget    = false;
-			MustHaveTarget = false;
+			NeedsBoardPosition = false;
+			NeedsTarget        = false;
+			MustHaveTarget     = false;
 		}
 
 		public abstract Card Clone();
 
-//		private void payManaCost( GameState gs )
+//		private void PayManaCost( GameState gs )
 //		{
-//			gs.me.availableMana = gs.me.availableMana - cost;
-//			assert( gs.me.availableMana >= 0 );
+//			gs.Me.Mana = gs.Me.Mana - Cost;
+//			Debug.Assert( gs.Me.Mana >= 0 );
 //		}
 //
-//		private void removeFromHand( GameState gs )
+//		private void RemoveFromHand( GameState gs )
 //		{
-//			gs.me.hand.removeCard( this );
+//			gs.Me.Hand.RemoveCard( this );
 //		}
 //
 //		protected abstract
@@ -69,15 +72,15 @@ namespace CSHearth
 //			putIntoPlay( boardPos, gs );
 //		}
 //
-//		bool canTarget( Card card ) const
-//		{
-//			return false;
-//		}
-//
-//		bool canTarget( Hero hero ) const
-//		{
-//			return false;
-//		}
+		protected virtual bool CanTarget( Card card )
+		{
+			return false;
+		}
+
+		protected virtual bool CanTarget( Hero hero )
+		{
+			return false;
+		}
 	}
 }
 

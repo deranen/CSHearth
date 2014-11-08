@@ -52,6 +52,11 @@
     <Compile Include="src\cshearth\player\PlayerTag.cs" />
     <Compile Include="src\cshearth\card\Card.cs" />
     <Compile Include="src\cshearth\GameState.cs" />
+    <Compile Include="src\cshearth\board\Board.cs" />
+    <Compile Include="src\cshearth\card\CardTag.cs" />
+    <Compile Include="src\cshearth\GameLogic.cs" />
+    <Compile Include="src\cshearth\card\minion\Minion.cs" />
+    <Compile Include="src\cshearth\card\minion\MinionType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -63,5 +68,7 @@
     <Folder Include="src\cshearth\hand\" />
     <Folder Include="src\cshearth\player\" />
     <Folder Include="src\cshearth\card\" />
+    <Folder Include="src\cshearth\board\" />
+    <Folder Include="src\cshearth\card\minion\" />
   </ItemGroup>
 </Project>

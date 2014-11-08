@@ -19,8 +19,8 @@ namespace CSHearth
 
 			Deck deck1 = new Deck( cardList );
 
-			Player playerOne = new Player(PlayerId.PLAYER_ONE, heroJaina, deck0);
-			Player playerTwo = new Player(PlayerId.PLAYER_TWO, heroUther, deck1);
+			Player playerOne = new Player(PlayerTag.PlayerOne, heroJaina, deck0);
+			Player playerTwo = new Player(PlayerTag.PlayerTwo, heroUther, deck1);
 
 			Match match = new Match(playerOne, playerTwo);
 

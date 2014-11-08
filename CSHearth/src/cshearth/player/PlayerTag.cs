@@ -4,7 +4,8 @@ namespace CSHearth
 	public enum PlayerTag
 	{
 		PlayerOne,
-		PlayerTwo
+		PlayerTwo,
+		None
 	}
 }
 
