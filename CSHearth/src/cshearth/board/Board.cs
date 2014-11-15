@@ -32,7 +32,7 @@ namespace CSHearth
 				Minion clonedMinion = (Minion) minion.Clone();
 
 				int idx = (int) clonedMinion.Controller;
-				int pos = clonedMinion.BoardPosition;
+				int pos = (int) clonedMinion.BoardPosition;
 
 				clone._orderPlayedList[i]     = clonedMinion;
 				clone._positionList[idx][pos] = clonedMinion;
@@ -66,14 +66,17 @@ namespace CSHearth
 
 			_positionList[idx].Insert( boardPos, minion );
 			_orderPlayedList.Add( minion );
+
+			minion.BoardPosition = boardPos;
 		}
 
 		public void RemoveMinion( Minion minion )
 		{
 			int idx = (int) minion.Controller;
+			int pos = (int) minion.BoardPosition;
 
-			_positionList[idx].Remove( minion );
-			_orderPlayedList.Remove( minion );
+			_positionList[idx].RemoveAt( pos );
+			_orderPlayedList.RemoveAt( pos );
 		}
 
 		public int GetFreeBoardPositionCount( Player player )

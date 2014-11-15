@@ -3,11 +3,6 @@ using System.Diagnostics;
 
 namespace CSHearth
 {
-	public enum CardType
-	{
-		Spell, Minion, Weapon
-	}
-
 	public enum CardClass
 	{
 		Neutral, Warrior, Shaman, Rogue, Paladin, Hunter, Druid, Warlock, Mage, Priest
@@ -17,21 +12,18 @@ namespace CSHearth
 	{
 		public int Id { get; private set; }
 
-		public CardType  Type  { get; private set; }
+		public string    Name  { get; private set; }
 		public CardClass Class { get; private set; }
-		public CardTag   Tag   { get; private set; }
-
-		public int Cost { get; private set; }
+		public int       Cost  { get; private set; }
 
 		public bool NeedsTarget        { get; protected set; }
 		public bool MustHaveTarget     { get; protected set; }
 
-		protected Card( CardType cardType, CardClass cardClass, CardTag tag, int cost)
+		protected Card( string name, CardClass cardClass, int cost)
 		{
 			Id    = Session.GetUniqueId();
-			Type  = cardType;
+			Name  = name;
 			Class = cardClass;
-			Tag   = tag;
 			Cost  = cost;
 
 			NeedsTarget        = false;

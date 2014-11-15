@@ -14,9 +14,9 @@ namespace CSHearth
 			_fileReader = File.OpenText( path );
 		}
 
-		public List<CardTag> ParseDeck()
+		public List<string> ParseDeck()
 		{
-			List<CardTag> cardList = new List<CardTag>();
+			List<string> cardList = new List<string>();
 
 			string line = "";
 
@@ -31,10 +31,8 @@ namespace CSHearth
 
 				Debug.Assert( cardCount >= 0 );
 
-				CardTag cardTag = (CardTag) Enum.Parse( typeof(CardTag), cardName );
-
 				for( int i = 0; i < cardCount; ++i ) {
-					cardList.Add( cardTag );
+					cardList.Add( cardName );
 				}
 			}
 

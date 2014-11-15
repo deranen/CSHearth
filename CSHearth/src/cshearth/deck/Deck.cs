@@ -10,10 +10,11 @@ namespace CSHearth
 
 		public Deck()
 		{
+			Cards = new List<Card>();
 			Cards.Capacity = 30;
 		}
 
-		public Deck( List<CardTag> cardList )
+		public Deck( List<string> cardList )
 			: this()
 		{
 			foreach( var cardTag in cardList ) 

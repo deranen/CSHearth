@@ -10,12 +10,12 @@ namespace CSHearth
 			Hero heroJaina = new JainaProudmoore();
 			Hero heroUther = new UtherLightbringer();
 
-			DeckParser deckParser = new DeckParser( "../../src/dhearth/decks/ExampleDeck0.txt" );
-			List<CardTag> cardList = deckParser.ParseDeck();
+			DeckParser deckParser = new DeckParser( "ExampleDeck0.txt" );
+			List<string> cardList = deckParser.ParseDeck();
 
 			Deck deck0 = new Deck( cardList );
 
-			deckParser = new DeckParser( "../../src/dhearth/decks/ExampleDeck0.txt" );
+			deckParser = new DeckParser( "ExampleDeck0.txt" );
 			cardList = deckParser.ParseDeck();
 
 			Deck deck1 = new Deck( cardList );

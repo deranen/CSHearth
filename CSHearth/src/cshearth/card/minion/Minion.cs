@@ -4,7 +4,7 @@ namespace CSHearth
 {
 	public abstract class Minion : Card
 	{
-		public MinionType MinionType { get; private set; }
+		public MinionType Type { get; private set; }
 
 		public int BaseAttack { get; private set; }
 		public int BaseHealth { get; private set; }
@@ -14,21 +14,21 @@ namespace CSHearth
 		public int MaxHealth { get; set; }
 
 		public PlayerTag Controller    { get; set; }
-		public int       BoardPosition { get; set; }
+		public int?      BoardPosition { get; set; }
 
-		public int       AttackCount    { get; set; }
-		public bool      PlayedThisTurn { get; set; }
+		public int  AttackCount    { get; set; }
+		public bool PlayedThisTurn { get; set; }
 
 		protected Minion(
+			string     name,
 			CardClass  cardClass,
-			CardTag    cardTag,
-			MinionType minionType,
+			MinionType type,
 			int        cost,
 			int        baseAttack,
 			int        baseHealth)
-			: base( CardType.Minion, cardClass, cardTag, cost )
+			: base( name, cardClass, cost )
 		{
-			MinionType = minionType;
+			Type       = type;
 			BaseAttack = baseAttack;
 			BaseHealth = baseHealth;
 			Attack     = baseAttack;
@@ -36,7 +36,7 @@ namespace CSHearth
 			MaxHealth  = baseHealth;
 
 			Controller    = PlayerTag.None;
-			BoardPosition = -1;
+			BoardPosition = null;
 
 			AttackCount    = 0;
 			PlayedThisTurn = false;
