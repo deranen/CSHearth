@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CSHearth
 {
@@ -10,12 +11,12 @@ namespace CSHearth
 			Hero heroUther = new UtherLightbringer();
 
 			DeckParser deckParser = new DeckParser( "../../src/dhearth/decks/ExampleDeck0.txt" );
-			CardList cardList = deckParser.parseDeck();
+			List<CardTag> cardList = deckParser.ParseDeck();
 
 			Deck deck0 = new Deck( cardList );
 
 			deckParser = new DeckParser( "../../src/dhearth/decks/ExampleDeck0.txt" );
-			cardList = deckParser.parseDeck();
+			cardList = deckParser.ParseDeck();
 
 			Deck deck1 = new Deck( cardList );
 
@@ -24,7 +25,7 @@ namespace CSHearth
 
 			Match match = new Match(playerOne, playerTwo);
 
-			match.startGame();
+			match.StartGame();
 		}
 	}
 }

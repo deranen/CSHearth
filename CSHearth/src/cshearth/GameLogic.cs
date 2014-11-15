@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace CSHearth
 {
@@ -6,6 +6,8 @@ namespace CSHearth
 	{
 		public double    BestScore     { get; private set; }
 		public GameState BestGameState { get; private set; }
+
+		public List<Action> TurnActionList { get; private set; }
 
 		public int VariationsSimulated { get; private set; }
 
@@ -17,21 +19,26 @@ namespace CSHearth
 			VariationsSimulated = 0;
 		}
 
-		public void PlayTurn( GameState gs )
+		public void StartOfTurn( GameState gs )
 		{
 			BestScore     = double.NegativeInfinity;
 			BestGameState = null;
 
 			VariationsSimulated = 0;
+		}
 
+		public void PlayTurn( GameState gs )
+		{
+			StartOfTurn( gs );
 			PlayTurnRecursive( gs );
 		}
 
-		private void PlayTurnRecursive( GameState gs )
+		void PlayTurnRecursive( GameState gs )
 		{
-			if( gs.TurnEnded || gs.Me.IsDead || gs.Opponent.IsDead )
+			if( gs.TurnEnded || gs.Me.IsDead() || gs.Opponent.IsDead() )
 			{
-				double score = AI.CalculateScore( gs );
+				// TODO: Implement simple scoring function
+				double score = 0.0; //AI.CalculateScore( gs );
 
 				if( score > BestScore ) {
 					BestScore     = score;
@@ -43,82 +50,166 @@ namespace CSHearth
 				return;
 			}
 			else {
-				AbstractAction action = new EndTurnAction();
+				Action action = new EndTurnAction();
 
-				performAction( action );
+				PerformAction( action, gs );
 			}
 
-			int myMinionCount = Board.GetMinionCount( gs.Me );
+			int myMinionCount = gs.Board.GetMinionCount( gs.Me );
 
-//			for( int myMinionPos = 0; myMinionPos < myMinionCount; ++myMinionPos )
-//			{
-//
-//			}
-
-			foreach( size_t attackingMinionPos; 0..myMinionCount )
+			for( int myMinionPos = 0; myMinionPos < myMinionCount; ++myMinionPos )
 			{
-				Minion attackingMinion = _board.getMinion( _me, attackingMinionPos );
+				Minion myMinion = gs.Board.GetMinion( gs.Me, myMinionPos );
 
-				if( !attackingMinion.canAttack() ) {
+				if( !myMinion.CanAttack() ) {
 					continue;
 				}
 
-				immutable bool   oppoHasTauntedMinions = _board.hasTauntedMinions( _opponent );
-				immutable size_t oppoMinionCount       = _board.getMinionCount   ( _opponent );
+				int oppoMinionCount = gs.Board.GetMinionCount( gs.Opponent );
 
-				foreach( size_t defendingMinionPos; 0..oppoMinionCount )
+				for( int oppoMinionPos = 0; oppoMinionPos < oppoMinionCount; ++oppoMinionPos )
 				{
-					Minion defendingMinion = _board.getMinion( _opponent, defendingMinionPos );
+					Minion oppoMinion = gs.Board.GetMinion( gs.Opponent, oppoMinionPos );
 
-					if( oppoHasTauntedMinions && !defendingMinion.hasTaunt() ) {
-						continue;
-					}
+					// TODO: Handle taunt
 
-					AbstractAction action =
-						new AttackMinionWithMinionAction( attackingMinionPos, defendingMinionPos );
+					Action action = new AttackMinionWithMinionAction( myMinionPos, oppoMinionPos );
 
-					performAction( action );
+					PerformAction( action, gs );
 				}
 
-				if( !oppoHasTauntedMinions )
+				// TODO: Handle taunt
+
 				{
+					Action action = new AttackHeroWithMinionAction( myMinionPos );
 
-					AbstractAction action =
-						new AttackHeroWithMinionAction( attackingMinionPos );
-
-					performAction( action );
+					PerformAction( action, gs );
 				}
 			}
 
-			immutable size_t cardCount = _me.hand.cardCount;
+			int cardCount = gs.Me.Hand.CardCount;
 
-			foreach( size_t handPos; 0..cardCount )
+			for( int handPos = 0; handPos < cardCount; ++handPos )
 			{
-				Card card = _me.hand.getCard( handPos );
+				Card card = gs.Me.Hand.GetCard( handPos );
 
-				if( !canAffordToPlay( card ) ) {
+				if( !CanAffordToPlay( card, gs ) ) {
 					continue;
 				}
 
-				if( card.needsTarget )
+				if( card.NeedsTarget )
 				{
-					size_t availableTargets = 0;
+					int availableTargets = 0;
 
-					availableTargets += targetMinionsOnBoard( card, handPos, _me );
-					availableTargets += targetMinionsOnBoard( card, handPos, _opponent );
+					availableTargets += TargetMinionsOnBoard( card, handPos, gs.Me, gs );
+					availableTargets += TargetMinionsOnBoard( card, handPos, gs.Opponent, gs );
 
-					availableTargets += targetHero( card, handPos, _me );
-					availableTargets += targetHero( card, handPos, _opponent );
+					availableTargets += TargetHero( card, handPos, gs.Me, gs );
+					availableTargets += TargetHero( card, handPos, gs.Opponent, gs );
 
-					if( availableTargets == 0 && !card.mustHaveTarget )
+					if( availableTargets == 0 && !card.MustHaveTarget )
 					{
-						playCardWithoutTarget( card, handPos );
+						PlayCardWithoutTarget( card, handPos, gs );
 					}
 				}
 				else {
-					playCardWithoutTarget( card, handPos );
+					PlayCardWithoutTarget( card, handPos, gs );
 				}
 			}
+		}
+
+		int TargetMinionsOnBoard( Card card, int cardHandPos, Player player, GameState gs )
+		{
+			int availableTargets = 0;
+
+			int minionCount = gs.Board.GetMinionCount( player );
+
+			for( int targetBoardPos = 0; targetBoardPos < minionCount; ++targetBoardPos )
+			{
+				Minion targetMinion = gs.Board.GetMinion( player, targetBoardPos );
+
+				if( !card.CanTarget( targetMinion ) ) {
+					continue;
+				}
+
+				++availableTargets;
+
+				if( card is Minion )
+				{
+					int availablePosCount = gs.Board.GetFreeBoardPositionCount( gs.Me );
+
+					for( int boardPos = 0; boardPos < availablePosCount; ++boardPos )
+					{
+						Action action = new PlayMinionTargetingMinionAction( cardHandPos, boardPos, targetBoardPos, player.Tag );
+
+						PerformAction( action, gs );
+					}
+				}
+				else {
+					Action action = new PlayCardTargetingMinionAction( cardHandPos, targetBoardPos, player.Tag );
+
+					PerformAction( action, gs );
+				}
+			}
+
+			return availableTargets;
+		}
+
+		int TargetHero( Card card, int cardHandPos, Player player, GameState gs )
+		{
+			if( !card.CanTarget( player.Hero ) ) {
+				return 0;
+			}
+
+			if( card is Minion )
+			{
+				int availablePosCount = gs.Board.GetFreeBoardPositionCount( gs.Me );
+
+				for( int boardPos = 0; boardPos < availablePosCount; ++boardPos )
+				{
+					Action action = new PlayMinionTargetingHeroAction( cardHandPos, boardPos, player.Tag );
+					PerformAction( action, gs );
+				}
+			}
+			else {
+				Action action = new PlayCardTargetingHeroAction( cardHandPos, player.Tag );
+				PerformAction( action, gs );
+			}
+
+			return 1;
+		}
+
+		void PlayCardWithoutTarget( Card card, int cardHandPos, GameState gs )
+		{
+			if( card is Minion )
+			{
+				int availablePosCount = gs.Board.GetFreeBoardPositionCount( gs.Me );
+
+				for( int boardPos = 0; boardPos < availablePosCount; ++boardPos )
+				{
+					Action action = new PlayMinionAction( cardHandPos, boardPos );
+					PerformAction( action, gs );
+				}
+			}
+			else {
+				Action action = new PlayCardAction( cardHandPos );
+				PerformAction( action, gs );
+			}
+		}
+
+		void PerformAction( Action action, GameState gs )
+		{
+			GameState newState = gs.Clone();
+
+			TurnActionList.Add( action );
+			action.PerformAction( newState );
+
+			PlayTurnRecursive( newState );
+		}
+
+		bool CanAffordToPlay( Card card, GameState gs )
+		{
+			return ( card.Cost <= gs.Me.Mana );
 		}
 	}
 }

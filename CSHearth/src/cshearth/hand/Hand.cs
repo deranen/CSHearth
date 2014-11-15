@@ -6,47 +6,55 @@ namespace CSHearth
 {
 	public class Hand
 	{
-		public List<Card> Cards { get; private set; }
+		readonly List<Card> _cards;
 
 		public Hand()
 		{
-			Cards.Capacity = 10;
+			_cards = new List<Card>();
+			_cards.Capacity = 10;
 		}
 
 		public Hand Clone()
 		{
 			Hand hand = (Hand) MemberwiseClone();
 
-			for( int i = 0; i < Cards.Count; ++i ) {
-				hand.Cards[i] = Cards[i].Clone();
+			for( int i = 0; i < _cards.Count; ++i ) {
+				hand._cards[i] = _cards[i].Clone();
 			}
+
+			return hand;
 		}
 
-		public bool IsEmpty()
+		public bool Empty
 		{
-			return (Cards.Count == 0);
+			get { return (_cards.Count == 0); }
+		}
+
+		public int CardCount
+		{
+			get { return _cards.Count; }
 		}
 
 		public void AddCard( Card card )
 		{
-			Cards.Add( card );
+			_cards.Add( card );
 		}
 
-		public Card GetCard( int index )
+		public Card GetCard( int handPos )
 		{
-			return Cards[index];
+			return _cards[handPos];
 		}
 
-		public void RemoveCard( int index )
+		public void RemoveCard( int handPos )
 		{
-			Cards.RemoveAt( index );
+			_cards.RemoveAt( handPos );
 		}
 
 		public void RemoveCard( Card card )
 		{
 			bool cardRemoved = false;
 
-			for( int i = 0; i < Cards.Count; ++i )
+			for( int i = 0; i < _cards.Count; ++i )
 			{
 				Card handCard = GetCard( i );
 

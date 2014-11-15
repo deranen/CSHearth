@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Remoting;
 
 namespace CSHearth
 {
@@ -12,6 +13,17 @@ namespace CSHearth
 			Cards.Capacity = 30;
 		}
 
+		public Deck( List<CardTag> cardList )
+			: this()
+		{
+			foreach( var cardTag in cardList ) 
+			{
+				ObjectHandle oh = Activator.CreateInstance( null, "CSHearth." + cardTag );
+				Card card = (Card) oh.Unwrap();
+				Cards.Add( card );
+			}
+		}
+
 		public Deck Clone()
 		{
 			Deck deck = (Deck) MemberwiseClone();
@@ -19,6 +31,8 @@ namespace CSHearth
 			for( int i = 0; i < Cards.Count; ++i ) {
 				deck.Cards[i] = Cards[i].Clone();
 			}
+
+			return deck;
 		}
 
 		public bool IsEmpty()
@@ -34,7 +48,7 @@ namespace CSHearth
 		public Card DrawCard()
 		{
 			Card card = Cards[Cards.Count - 1];
-			Cards.RemoveAt[Cards.Count - 1];
+			Cards.RemoveAt( Cards.Count - 1 );
 
 			return card;
 		}

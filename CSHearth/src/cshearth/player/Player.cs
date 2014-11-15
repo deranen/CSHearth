@@ -30,6 +30,8 @@ namespace CSHearth
 			clone.Hero = Hero.Clone();
 			clone.Deck = Deck.Clone();
 			clone.Hand = Hand.Clone();
+
+			return clone;
 		}
 
 		public void IncreaseMaxMana()

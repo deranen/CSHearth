@@ -17,67 +17,40 @@ namespace CSHearth
 	{
 		public int Id { get; private set; }
 
-		public CardTag   Tag   { get; private set; }
-		public CardClass Class { get; private set; }
 		public CardType  Type  { get; private set; }
+		public CardClass Class { get; private set; }
+		public CardTag   Tag   { get; private set; }
 
 		public int Cost { get; private set; }
 
-		public bool NeedsBoardPosition { get; private set; }
-		public bool NeedsTarget        { get; private set; }
-		public bool MustHaveTarget     { get; private set; }
+		public bool NeedsTarget        { get; protected set; }
+		public bool MustHaveTarget     { get; protected set; }
 
-		protected Card( CardTag tag, CardClass cardClass, CardType cardType, int cost)
+		protected Card( CardType cardType, CardClass cardClass, CardTag tag, int cost)
 		{
 			Id    = Session.GetUniqueId();
-			Tag   = tag;
-			Class = cardClass;
 			Type  = cardType;
+			Class = cardClass;
+			Tag   = tag;
 			Cost  = cost;
 
-			NeedsBoardPosition = false;
 			NeedsTarget        = false;
 			MustHaveTarget     = false;
 		}
 
-		public abstract Card Clone();
+		public virtual Card Clone()
+		{
+			Card card = (Card) MemberwiseClone();
 
-//		private void PayManaCost( GameState gs )
-//		{
-//			gs.Me.Mana = gs.Me.Mana - Cost;
-//			Debug.Assert( gs.Me.Mana >= 0 );
-//		}
-//
-//		private void RemoveFromHand( GameState gs )
-//		{
-//			gs.Me.Hand.RemoveCard( this );
-//		}
-//
-//		protected abstract
-//		void putIntoPlay( size_t boardPos, GameState gs );
-//
-//		void playCard( size_t boardPos, Player player, GameState gs )
-//		{
-//			payManaCost( gs );
-//			removeFromHand( gs );
-//			putIntoPlay( boardPos, gs );
-//		}
-//
-//		void playCard( size_t boardPos, GameState gs )
-//		{
-//			logPlayCard();
-//
-//			payManaCost( gs );
-//			removeFromHand( gs );
-//			putIntoPlay( boardPos, gs );
-//		}
-//
-		protected virtual bool CanTarget( Card card )
+			return card;
+		}
+
+		public virtual bool CanTarget( Card card )
 		{
 			return false;
 		}
 
-		protected virtual bool CanTarget( Hero hero )
+		public virtual bool CanTarget( Hero hero )
 		{
 			return false;
 		}

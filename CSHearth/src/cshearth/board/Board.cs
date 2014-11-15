@@ -6,21 +6,20 @@ namespace CSHearth
 {
 	public class Board
 	{
-		private readonly List<Minion>   _orderPlayedList;
-		private readonly List<Minion>[] _positionList;
-
-		private int _orderPlayedCounter;
+		readonly List<Minion>   _orderPlayedList;
+		readonly List<Minion>[] _positionList;
 
 		public Board()
 		{
 			_orderPlayedList = new List<Minion>();
-			_positionList    = new List<Minion>[2]();
+			_positionList    = new List<Minion>[2];
+
+			_positionList[0] = new List<Minion>();
+			_positionList[1] = new List<Minion>();
 
 			_orderPlayedList.Capacity = 2 * 7;
 			_positionList[0].Capacity = 7;
 			_positionList[1].Capacity = 7;
-
-			_orderPlayedCounter = 0;
 		}
 
 		public Board Clone()
@@ -30,63 +29,63 @@ namespace CSHearth
 			for( int i = 0; i < _orderPlayedList.Count; ++i ) {
 				Minion minion = _orderPlayedList[i];
 
-				Minion clonedMinion = minion.Clone();
+				Minion clonedMinion = (Minion) minion.Clone();
 
-				PlayerTag tag = clonedMinion.Controller;
-				int       pos = clonedMinion.BoardPosition;
+				int idx = (int) clonedMinion.Controller;
+				int pos = clonedMinion.BoardPosition;
 
 				clone._orderPlayedList[i]     = clonedMinion;
-				clone._positionList[tag][pos] = clonedMinion;
+				clone._positionList[idx][pos] = clonedMinion;
 			}
+
+			return clone;
 		}
 
 		public List<Minion> GetMinions( Player player )
 		{
-			PlayerTag tag = player.Tag;
-			return _positionList[tag];
+			int idx = (int) player.Tag;
+			return _positionList[idx];
 		}
 
 		public Minion GetMinion( Player player, int minionPos )
 		{
-			PlayerTag tag = player.Tag;
-			return _positionList[tag][minionPos];
+			int idx = (int) player.Tag;
+			return _positionList[idx][minionPos];
 		}
 
 		public int GetMinionCount( Player player )
 		{
-			PlayerTag tag = player.Tag;
-			return _positionList[tag].Count;
+			int idx = (int) player.Tag;
+			return _positionList[idx].Count;
 		}
 
 		public void PutMinion( Minion minion, int boardPos, Player player )
 		{
-			PlayerTag tag = player.Tag;
-			minion.Controller = tag;
+			minion.Controller = player.Tag;
+			int idx = (int) player.Tag;
 
-			_positionList[tag].Insert( boardPos, minion );
-			_orderPlayedList[tag].Add( minion );
+			_positionList[idx].Insert( boardPos, minion );
+			_orderPlayedList.Add( minion );
 		}
 
 		public void RemoveMinion( Minion minion )
 		{
-			PlayerTag tag = minion.Controller;
+			int idx = (int) minion.Controller;
 
-			_positionList[tag].Remove( minion );
+			_positionList[idx].Remove( minion );
 			_orderPlayedList.Remove( minion );
 		}
 
 		public int GetFreeBoardPositionCount( Player player )
 		{
-			PlayerTag tag = player.Tag;
-
-			int count = _positionList[tag].Count;
+			int idx = (int) player.Tag;
+			int count = _positionList[idx].Count;
 
 			if( count == 7 ) {
 				return 0;
 			}
-			else {
-				return count + 1;
-			}
+
+			return count + 1;
 		}
 	}
 }

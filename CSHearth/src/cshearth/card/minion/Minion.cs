@@ -9,23 +9,24 @@ namespace CSHearth
 		public int BaseAttack { get; private set; }
 		public int BaseHealth { get; private set; }
 
-		public int Attack    { get; private set; }
-		public int Health    { get; private set; }
-		public int MaxHealth { get; private set; }
+		public int Attack    { get; set; }
+		public int Health    { get; set; }
+		public int MaxHealth { get; set; }
 
-		public PlayerTag Controller     { get; private set; }
-		public int       AttackCount    { get; private set; }
-		public bool      PlayedThisTurn { get; private set; }
+		public PlayerTag Controller    { get; set; }
+		public int       BoardPosition { get; set; }
+
+		public int       AttackCount    { get; set; }
+		public bool      PlayedThisTurn { get; set; }
 
 		protected Minion(
-			CardTag    cardTag,
 			CardClass  cardClass,
-			CardType   cardType,
-			int        cost,
+			CardTag    cardTag,
 			MinionType minionType,
+			int        cost,
 			int        baseAttack,
 			int        baseHealth)
-			: base( cardTag, cardClass, cardType, cost )
+			: base( CardType.Minion, cardClass, cardTag, cost )
 		{
 			MinionType = minionType;
 			BaseAttack = baseAttack;
@@ -34,16 +35,16 @@ namespace CSHearth
 			Health     = baseHealth;
 			MaxHealth  = baseHealth;
 
-			Controller     = PlayerTag.None;
+			Controller    = PlayerTag.None;
+			BoardPosition = -1;
+
 			AttackCount    = 0;
 			PlayedThisTurn = false;
-
-			base.NeedsBoardPosition = true;
 		}
 
-		public Minion Clone()
+		public override Card Clone()
 		{
-			Minion clone = (Minion) MemberwiseClone();
+			Minion clone = (Minion) base.Clone();
 
 			return clone;
 		}
