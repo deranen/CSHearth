@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CSHearth
 {
@@ -10,6 +11,8 @@ namespace CSHearth
 
 		public bool TurnEnded { get; set; }
 
+		public List<Action> TurnActionList { get; private set; }
+
 		public GameState(Player me, Player opponent)
 		{
 			Me       = me;
@@ -17,6 +20,8 @@ namespace CSHearth
 			Board    = new Board();
 
 			TurnEnded = false;
+
+			TurnActionList = new List<Action>();
 		}
 
 		public GameState Clone()
@@ -26,6 +31,12 @@ namespace CSHearth
 			clone.Me       = Me.Clone();
 			clone.Opponent = Opponent.Clone();
 			clone.Board    = Board.Clone();
+
+			clone.TurnActionList = new List<Action>( TurnActionList );
+
+			for( int i = 0; i < TurnActionList.Count; ++i ) {
+				clone.TurnActionList[i] = TurnActionList[i].Clone();
+			}
 
 			return clone;
 		}

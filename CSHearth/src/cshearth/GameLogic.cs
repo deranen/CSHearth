@@ -4,15 +4,17 @@ namespace CSHearth
 {
 	public class GameLogic
 	{
+		IArtificalIntelligence _ai;
+
 		public double    BestScore     { get; private set; }
 		public GameState BestGameState { get; private set; }
 
-		public List<Action> TurnActionList { get; private set; }
-
 		public int VariationsSimulated { get; private set; }
 
-		public GameLogic()
+		public GameLogic( IArtificalIntelligence ai )
 		{
+			_ai = ai;
+
 			BestScore     = double.NegativeInfinity;
 			BestGameState = null;
 
@@ -25,6 +27,18 @@ namespace CSHearth
 			BestGameState = null;
 
 			VariationsSimulated = 0;
+
+			gs.TurnEnded = false;
+
+			gs.Me.IncreaseMaxMana();
+			gs.Me.RestoreMana();
+
+			foreach( Minion minion in gs.Board.GetMinions(gs.Me) ) {
+				minion.PlayedThisTurn = false;
+				minion.AttackCount = 0;
+			}
+
+			gs.Me.DrawCard();
 		}
 
 		public void PlayTurn( GameState gs )
@@ -37,8 +51,7 @@ namespace CSHearth
 		{
 			if( gs.TurnEnded || gs.Me.IsDead() || gs.Opponent.IsDead() )
 			{
-				// TODO: Implement simple scoring function
-				double score = 0.0; //AI.CalculateScore( gs );
+				double score = _ai.CalculateScore( gs );
 
 				if( score > BestScore ) {
 					BestScore     = score;
@@ -201,7 +214,7 @@ namespace CSHearth
 		{
 			GameState newState = gs.Clone();
 
-			TurnActionList.Add( action );
+			newState.TurnActionList.Add( action );
 			action.PerformAction( newState );
 
 			PlayTurnRecursive( newState );

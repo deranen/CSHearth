@@ -13,8 +13,7 @@ namespace CSHearth
 		public int Health    { get; set; }
 		public int MaxHealth { get; set; }
 
-		public PlayerTag Controller    { get; set; }
-		public int?      BoardPosition { get; set; }
+		public PlayerTag Controller { get; set; }
 
 		public int  AttackCount    { get; set; }
 		public bool PlayedThisTurn { get; set; }
@@ -33,8 +32,7 @@ namespace CSHearth
 			Health     = baseHealth;
 			MaxHealth  = baseHealth;
 
-			Controller    = PlayerTag.None;
-			BoardPosition = null;
+			Controller = PlayerTag.None;
 
 			AttackCount    = 0;
 			PlayedThisTurn = false;

@@ -29,6 +29,8 @@ namespace CSHearth
 		{
 			Deck deck = (Deck) MemberwiseClone();
 
+			deck.Cards = new List<Card>( Cards );
+
 			for( int i = 0; i < Cards.Count; ++i ) {
 				deck.Cards[i] = Cards[i].Clone();
 			}

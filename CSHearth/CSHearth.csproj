@@ -76,6 +76,8 @@
     <Compile Include="src\cshearth\card\minion\concrete\BoulderfistOgre.cs" />
     <Compile Include="src\cshearth\card\minion\concrete\MagmaRager.cs" />
     <Compile Include="src\cshearth\card\minion\concrete\MurlocRaider.cs" />
+    <Compile Include="src\cshearth\ai\IArtificalIntelligence.cs" />
+    <Compile Include="src\cshearth\ai\BasicAI.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -92,8 +94,10 @@
     <Folder Include="src\cshearth\card\minion\concrete\" />
     <Folder Include="src\cshearth\action\" />
     <Folder Include="src\cshearth\decks\" />
+    <Folder Include="src\cshearth\ai\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\cshearth\decks\ExampleDeck1.txt" />
     <None Include="src\cshearth\decks\ExampleDeck0.txt" />
   </ItemGroup>
 </Project>

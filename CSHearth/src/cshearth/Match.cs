@@ -9,10 +9,14 @@ namespace CSHearth
 		Player _playerOne;
 		Player _playerTwo;
 
-		public Match( Player playerOne, Player playerTwo )
+		GameLogic _gameLogic;
+
+		public Match( Player playerOne, Player playerTwo, IArtificalIntelligence ai )
 		{
 			_playerOne = playerOne;
 			_playerTwo = playerTwo;
+
+			_gameLogic = new GameLogic( ai );
 		}
 
 		public void StartGame()
@@ -68,24 +72,26 @@ namespace CSHearth
 
 		List<Action> PlayGame( GameState currentTurn )
 		{
-			var gameLogic = new GameLogic();
 			var gameActionList = new List<Action>();
 
 			int turnsTaken = 0;
 
 			while( true )
 			{
-				gameLogic.PlayTurn( currentTurn );
+				_gameLogic.PlayTurn( currentTurn );
 
 				++turnsTaken;
 
-				Console.WriteLine("Variations simulated: " + gameLogic.VariationsSimulated);
+				Debug.Assert( turnsTaken > 200 );
 
-				GameState endOfTurn = gameLogic.BestGameState;
+				Console.WriteLine("Variations simulated: " + _gameLogic.VariationsSimulated);
 
-				Debug.Assert( gameLogic.TurnActionList.Count > 0 );
+				GameState endOfTurn = _gameLogic.BestGameState;
 
-				gameActionList.AddRange( gameLogic.TurnActionList );
+				Debug.Assert( endOfTurn.TurnActionList.Count > 0 );
+
+				gameActionList.AddRange( endOfTurn.TurnActionList );
+				endOfTurn.TurnActionList.Clear();
 
 				bool p1IsDead = endOfTurn.GetPlayer(_playerOne.Tag).IsDead();
 				bool p2IsDead = endOfTurn.GetPlayer(_playerTwo.Tag).IsDead();
@@ -104,9 +110,7 @@ namespace CSHearth
 
 		int StartReplay( GameState gs, List<Action> actionList )
 		{
-			var gameLogic = new GameLogic();
-
-			gameLogic.StartOfTurn( gs );
+			_gameLogic.StartOfTurn( gs );
 
 			foreach( Action action in actionList )
 			{
@@ -135,7 +139,7 @@ namespace CSHearth
 				{
 					gs.SwitchTurns();
 
-					gameLogic.StartOfTurn( gs );
+					_gameLogic.StartOfTurn( gs );
 				}
 			}
 

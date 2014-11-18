@@ -6,7 +6,7 @@ namespace CSHearth
 {
 	public class Hand
 	{
-		readonly List<Card> _cards;
+		List<Card> _cards;
 
 		public Hand()
 		{
@@ -17,6 +17,8 @@ namespace CSHearth
 		public Hand Clone()
 		{
 			Hand hand = (Hand) MemberwiseClone();
+
+			hand._cards = new List<Card>( _cards );
 
 			for( int i = 0; i < _cards.Count; ++i ) {
 				hand._cards[i] = _cards[i].Clone();

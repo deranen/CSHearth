@@ -34,7 +34,9 @@ namespace CSHearth
 
 		public Hero Clone ()
 		{
-			return (Hero)this.MemberwiseClone ();
+			Hero clone = (Hero) MemberwiseClone();
+
+			return clone;
 		}
 
 		public bool IsDead()

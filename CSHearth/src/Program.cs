@@ -23,7 +23,8 @@ namespace CSHearth
 			Player playerOne = new Player(PlayerTag.PlayerOne, heroJaina, deck0);
 			Player playerTwo = new Player(PlayerTag.PlayerTwo, heroUther, deck1);
 
-			Match match = new Match(playerOne, playerTwo);
+			IArtificalIntelligence ai = new BasicAI();
+			Match match = new Match(playerOne, playerTwo, ai);
 
 			match.StartGame();
 		}

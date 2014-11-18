@@ -6,8 +6,8 @@ namespace CSHearth
 {
 	public class Board
 	{
-		readonly List<Minion>   _orderPlayedList;
-		readonly List<Minion>[] _positionList;
+		List<Minion>   _orderPlayedList;
+		List<Minion>[] _positionList;
 
 		public Board()
 		{
@@ -26,13 +26,19 @@ namespace CSHearth
 		{
 			Board clone = (Board) MemberwiseClone();
 
+			clone._orderPlayedList = new List<Minion>( _orderPlayedList );
+
+			clone._positionList    = new List<Minion>[2];
+			clone._positionList[0] = new List<Minion>( _positionList[0] );
+			clone._positionList[1] = new List<Minion>( _positionList[1] );
+
 			for( int i = 0; i < _orderPlayedList.Count; ++i ) {
 				Minion minion = _orderPlayedList[i];
 
 				Minion clonedMinion = (Minion) minion.Clone();
 
 				int idx = (int) clonedMinion.Controller;
-				int pos = (int) clonedMinion.BoardPosition;
+				int pos = _positionList[idx].IndexOf( minion );
 
 				clone._orderPlayedList[i]     = clonedMinion;
 				clone._positionList[idx][pos] = clonedMinion;
@@ -66,17 +72,14 @@ namespace CSHearth
 
 			_positionList[idx].Insert( boardPos, minion );
 			_orderPlayedList.Add( minion );
-
-			minion.BoardPosition = boardPos;
 		}
 
 		public void RemoveMinion( Minion minion )
 		{
 			int idx = (int) minion.Controller;
-			int pos = (int) minion.BoardPosition;
 
-			_positionList[idx].RemoveAt( pos );
-			_orderPlayedList.RemoveAt( pos );
+			_positionList[idx].Remove( minion );
+			_orderPlayedList.Remove( minion );
 		}
 
 		public int GetFreeBoardPositionCount( Player player )
