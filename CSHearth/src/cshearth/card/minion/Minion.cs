@@ -4,7 +4,7 @@ namespace CSHearth
 {
 	public abstract class Minion : Card
 	{
-		public MinionType Type { get; private set; }
+		public MinionType Type { get; protected set; }
 
 		public int BaseAttack { get; private set; }
 		public int BaseHealth { get; private set; }
@@ -21,14 +21,12 @@ namespace CSHearth
 
 		protected Minion(
 			string     name,
-			CardClass  cardClass,
-			MinionType type,
 			int        cost,
 			int        baseAttack,
 			int        baseHealth)
-			: base( name, cardClass, cost )
+			: base( name, cost )
 		{
-			Type       = type;
+			Type       = MinionType.NoType;
 			BaseAttack = baseAttack;
 			BaseHealth = baseHealth;
 			Attack     = baseAttack;

@@ -8,6 +8,8 @@ namespace CSHearth
 		Neutral, Warrior, Shaman, Rogue, Paladin, Hunter, Druid, Warlock, Mage, Priest
 	}
 
+	public enum Target { None, Needed, Forced }
+
 	public abstract class Card
 	{
 		public int Id { get; private set; }
@@ -16,18 +18,16 @@ namespace CSHearth
 		public CardClass Class { get; private set; }
 		public int       Cost  { get; private set; }
 
-		public bool NeedsTarget        { get; protected set; }
-		public bool MustHaveTarget     { get; protected set; }
+		public Target Target { get; private set; }
 
-		protected Card( string name, CardClass cardClass, int cost)
+		protected Card( string name, int cost)
 		{
 			Id    = Session.GetUniqueId();
 			Name  = name;
-			Class = cardClass;
+			Class = CardClass.Neutral;
 			Cost  = cost;
 
-			NeedsTarget        = false;
-			MustHaveTarget     = false;
+			Target = Target.None;
 		}
 
 		public virtual Card Clone()

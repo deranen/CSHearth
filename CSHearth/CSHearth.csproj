@@ -70,6 +70,12 @@
     <Compile Include="src\cshearth\Match.cs" />
     <Compile Include="src\cshearth\deck\DeckParser.cs" />
     <Compile Include="src\cshearth\Session.cs" />
+    <Compile Include="src\cshearth\card\minion\concrete\Wisp.cs" />
+    <Compile Include="src\cshearth\card\minion\concrete\CoreHound.cs" />
+    <Compile Include="src\cshearth\card\minion\concrete\BloodfenRaptor.cs" />
+    <Compile Include="src\cshearth\card\minion\concrete\BoulderfistOgre.cs" />
+    <Compile Include="src\cshearth\card\minion\concrete\MagmaRager.cs" />
+    <Compile Include="src\cshearth\card\minion\concrete\MurlocRaider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

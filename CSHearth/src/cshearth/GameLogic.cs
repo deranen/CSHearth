@@ -97,7 +97,7 @@ namespace CSHearth
 					continue;
 				}
 
-				if( card.NeedsTarget )
+				if( card.Target == Target.Needed )
 				{
 					int availableTargets = 0;
 
@@ -107,7 +107,7 @@ namespace CSHearth
 					availableTargets += TargetHero( card, handPos, gs.Me, gs );
 					availableTargets += TargetHero( card, handPos, gs.Opponent, gs );
 
-					if( availableTargets == 0 && !card.MustHaveTarget )
+					if( availableTargets == 0 && card.Target != Target.Forced )
 					{
 						PlayCardWithoutTarget( card, handPos, gs );
 					}
