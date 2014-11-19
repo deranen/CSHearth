@@ -18,6 +18,12 @@ namespace CSHearth
 		{
 			Minion minion = (Minion) gs.Me.Hand.GetCard( _handPos );
 
+			var eventArgs = new CardPlayedEventArgs {
+				HandPos = _handPos,
+				BoardPos = _boardPos
+			};
+			Events.OnCardPlayed( gs, eventArgs );
+
 			gs.Me.Mana -= minion.Cost;
 
 			Debug.Assert( gs.Me.Mana >= 0 );

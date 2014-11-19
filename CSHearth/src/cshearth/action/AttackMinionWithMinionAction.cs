@@ -18,6 +18,12 @@ namespace CSHearth
 			Minion attacker = gs.Board.GetMinion( gs.Me,       _attackerPos );
 			Minion defender = gs.Board.GetMinion( gs.Opponent, _defenderPos );
 
+			var eventArgs = new AttackEventArgs {
+				AttackerBoardPos = _attackerPos,
+				DefenderBoardPos = _defenderPos
+			};
+			Events.OnAttack( gs, eventArgs );
+
 			defender.Health -= attacker.Attack;
 			attacker.Health -= defender.Attack;
 

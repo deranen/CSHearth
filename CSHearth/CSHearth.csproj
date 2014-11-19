@@ -78,6 +78,8 @@
     <Compile Include="src\cshearth\card\minion\concrete\MurlocRaider.cs" />
     <Compile Include="src\cshearth\ai\IArtificalIntelligence.cs" />
     <Compile Include="src\cshearth\ai\BasicAI.cs" />
+    <Compile Include="src\cshearth\Events.cs" />
+    <Compile Include="src\cshearth\EventLogger.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

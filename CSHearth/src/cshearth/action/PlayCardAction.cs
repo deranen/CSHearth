@@ -15,6 +15,8 @@ namespace CSHearth
 		{
 			Card card = gs.Me.Hand.GetCard( _handPos );
 
+			Events.OnCardPlayed( gs, new CardPlayedEventArgs { HandPos = _handPos } );
+
 			throw new NotImplementedException();
 		}
 	}

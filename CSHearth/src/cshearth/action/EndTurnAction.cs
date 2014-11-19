@@ -8,6 +8,8 @@ namespace CSHearth
 		{
 			// TODO: Trigger end of turn stuff here
 
+			Events.OnTurnEnded( gs, EventArgs.Empty );
+
 			gs.TurnEnded = true;
 		}
 	}

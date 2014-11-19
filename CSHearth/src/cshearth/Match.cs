@@ -110,6 +110,8 @@ namespace CSHearth
 
 		int StartReplay( GameState gs, List<Action> actionList )
 		{
+			EventLogger eventLogger = new EventLogger( "GameLog.txt" );
+
 			_gameLogic.StartOfTurn( gs );
 
 			foreach( Action action in actionList )
