@@ -112,11 +112,15 @@ namespace CSHearth
 		{
 			EventLogger eventLogger = new EventLogger( "GameLog.txt" );
 
+			eventLogger.LogGameState( gs );
+
 			_gameLogic.StartOfTurn( gs );
 
 			foreach( Action action in actionList )
 			{
 				action.PerformAction( gs );
+
+				eventLogger.LogGameState( gs );
 
 				bool p1IsDead = gs.GetPlayer(_playerOne.Tag).IsDead();
 				bool p2IsDead = gs.GetPlayer(_playerTwo.Tag).IsDead();

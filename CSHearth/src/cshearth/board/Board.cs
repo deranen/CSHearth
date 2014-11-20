@@ -55,13 +55,27 @@ namespace CSHearth
 
 		public Minion GetMinion( Player player, int minionPos )
 		{
-			int idx = (int) player.Tag;
+			return GetMinion( player.Tag, minionPos );
+		}
+
+		public Minion GetMinion( PlayerTag playerTag, int minionPos )
+		{
+			Debug.Assert( playerTag != PlayerTag.None );
+
+			int idx = (int) playerTag;
 			return _positionList[idx][minionPos];
 		}
 
 		public int GetMinionCount( Player player )
 		{
-			int idx = (int) player.Tag;
+			return GetMinionCount( player.Tag );
+		}
+
+		public int GetMinionCount( PlayerTag playerTag )
+		{
+			Debug.Assert( playerTag != PlayerTag.None );
+
+			int idx = (int) playerTag;
 			return _positionList[idx].Count;
 		}
 

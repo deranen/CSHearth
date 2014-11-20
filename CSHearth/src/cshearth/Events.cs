@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace CSHearth
 {
@@ -29,17 +30,40 @@ namespace CSHearth
 
 	public class CardPlayedEventArgs : EventArgs
 	{
-		public int? HandPos         { get; set; }
-		public int? BoardPos        { get; set; }
-		public int? MinionTarget    { get; set; }
-		public PlayerTag HeroTarget { get; set; }
+		public int? HandPos          { get; set; }
+		public int? BoardPos         { get; set; }
+		public int? MinionTarget     { get; set; }
+		public PlayerTag MinionController { get; set; }
+		public PlayerTag HeroTarget       { get; set; }
 
 		public CardPlayedEventArgs()
 		{
 			HandPos      = null;
 			BoardPos     = null;
 			MinionTarget = null;
-			HeroTarget   = PlayerTag.None;
+			MinionController = PlayerTag.None;
+			HeroTarget       = PlayerTag.None;
+		}
+
+		public bool PlayedMinion()
+		{
+			return BoardPos != null;
+		}
+
+		public bool TargetedMinion()
+		{
+			if( MinionTarget != null ) {
+				if( MinionController == PlayerTag.None ) {
+					Debug.Assert( false );
+				}
+				return true;
+			}
+			return false;
+		}
+
+		public bool TargetedHero()
+		{
+			return HeroTarget != PlayerTag.None;
 		}
 	}
 
