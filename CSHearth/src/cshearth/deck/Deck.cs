@@ -57,12 +57,11 @@ namespace CSHearth
 		}
 
 		public void Shuffle()  
-		{  
-			Random rng = new Random();  
+		{    
 			int n = Cards.Count;
 
 			while( n > 1 ) {
-				int k = rng.Next( n );
+				int k = Session.RNG.Next( n );
 				--n;
 				Card card = Cards[k];
 				Cards[k] = Cards[n];

@@ -2,15 +2,30 @@
 
 namespace CSHearth
 {
-	public class Session
+	public static class Session
 	{
-		static int _uniqueId;
-		static Random _rng;
+		static int  _uniqueId;
+		static int _seed;
+
+		public static Random RNG  { get; private set; }
+
+		public static int Seed {
+			get {
+				return _seed;
+			}
+			set {
+				_seed = value;
+				RNG = new Random( _seed );
+			}
+		}
 
 		static Session()
 		{
 			_uniqueId = 0;
-			_rng = new Random();
+
+			TimeSpan t = DateTime.Now - new DateTime(2000, 1, 1, 0, 0, 0);
+			_seed      = (int) t.TotalSeconds;
+			RNG        = new Random( _seed );
 		}
 
 		public static int GetUniqueId()

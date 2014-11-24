@@ -21,6 +21,8 @@ namespace CSHearth
 
 		public void StartGame()
 		{
+			Console.WriteLine( "The seed for this match is: " + Session.Seed );
+
 			_playerOne.Deck.Shuffle();
 			_playerTwo.Deck.Shuffle();
 
@@ -28,9 +30,8 @@ namespace CSHearth
 			Player goesSecond;
 
 			// Decide who starts and who gets The Coin
-			Random rng = new Random(); 
 
-			int flip = rng.Next( 2 );
+			int flip = Session.RNG.Next( 2 );
 			if(flip == 0) {
 				goesFirst  = _playerOne;
 				goesSecond = _playerTwo;
@@ -74,7 +75,11 @@ namespace CSHearth
 		{
 			var gameActionList = new List<Action>();
 
+			EventLogger simulationLogger = new EventLogger( "SimulationLog.txt", false );
+
 			int turnsTaken = 0;
+
+			simulationLogger.LogGameState( currentTurn );
 
 			while( true )
 			{
@@ -89,6 +94,8 @@ namespace CSHearth
 				GameState endOfTurn = _gameLogic.BestGameState;
 
 				Debug.Assert( endOfTurn.TurnActionList.Count > 0 );
+
+				simulationLogger.LogGameState( endOfTurn );
 
 				gameActionList.AddRange( endOfTurn.TurnActionList );
 				endOfTurn.TurnActionList.Clear();
@@ -112,30 +119,26 @@ namespace CSHearth
 		{
 			EventLogger eventLogger = new EventLogger( "GameLog.txt" );
 
-			Console.Clear();
 			eventLogger.LogGameState( gs );
-			Console.ReadKey();
 
 			_gameLogic.StartOfTurn( gs );
 
-			Console.Clear();
 			eventLogger.LogGameState( gs );
-			Console.ReadKey();
 
 			foreach( Action action in actionList )
 			{
 				action.PerformAction( gs );
 
-				Console.ReadKey();
+				if( eventLogger.Interactive ) {
+					Console.ReadKey();
+				}
 
 				bool p1IsDead = gs.GetPlayer(_playerOne.Tag).IsDead();
 				bool p2IsDead = gs.GetPlayer(_playerTwo.Tag).IsDead();
 
 				if( p1IsDead || p2IsDead )
 				{
-					Console.Clear();
 					eventLogger.LogGameState( gs );
-					Console.ReadKey();
 
 					if( p1IsDead && p2IsDead ) {
 //						Log.Log( "Both players died. It's a draw." );
@@ -158,9 +161,7 @@ namespace CSHearth
 					_gameLogic.StartOfTurn( gs );
 				}
 
-				Console.Clear();
 				eventLogger.LogGameState( gs );
-				Console.ReadKey();
 			}
 
 			Debug.Assert( false );

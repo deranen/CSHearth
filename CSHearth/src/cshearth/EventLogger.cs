@@ -10,24 +10,41 @@ namespace CSHearth
 		public bool LogToFile    { get; set; }
 		public bool LogToConsole { get; set; }
 
+		public bool Interactive { get; set; }
+
+		bool _logActions;
+
 		const int    _boardWidth     = 40;
 		const char   _separatorChar  = '-';
 		const string _boardSeparator = "##";
 
-		public EventLogger(string fileName)
+		public EventLogger( string fileName ) : this( fileName, true )
+		{
+		}
+
+		public EventLogger( string fileName, bool logActions )
 		{
 			_file = new StreamWriter( fileName, false );
 
 			LogToFile    = true;
 			LogToConsole = true;
 
-			RegisterToEvents();
+			Interactive = true;
+
+			_logActions  = logActions;
+
+			if( _logActions ) {
+				RegisterToEvents();
+			}
 		}
 
 		~EventLogger()
 		{
 			_file.Close();
-			Detach();
+
+			if( _logActions ) {
+				Detach();
+			}
 		}
 
 		#region Logging methods
@@ -140,6 +157,10 @@ namespace CSHearth
 
 		public void LogGameState( GameState gs )
 		{
+			if( Interactive ) {
+				Console.Clear();
+			}
+
 			LogSeparator();
 			LogHero( gs );
 			LogSeparator();
@@ -149,6 +170,10 @@ namespace CSHearth
 			LogSeparator();
 			LogHand( gs );
 			LogSeparator();
+
+			if( Interactive ) {
+				Console.ReadKey();
+			}
 		}
 
 		void LogHero( GameState gs )
@@ -168,6 +193,14 @@ namespace CSHearth
 			string heroClass  = playerHero.Tag.ToString();
 			string heroHealth = playerHero.Health.ToString();
 			string heroString = string.Format( "{0} ({1})", heroClass, heroHealth );
+
+			if( gs.Me.Tag == playerTag ) {
+				if( playerTag == PlayerTag.PlayerOne ) {
+					heroString = heroString + " <==";
+				} else {
+					heroString = "==> " + heroString;
+				}
+			}
 
 			return heroString;
 		}
