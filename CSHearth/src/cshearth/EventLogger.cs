@@ -10,8 +10,8 @@ namespace CSHearth
 		public bool LogToFile    { get; set; }
 		public bool LogToConsole { get; set; }
 
-		const int _boardWidth = 40;
-		const char _separatorChar = '-';
+		const int    _boardWidth     = 40;
+		const char   _separatorChar  = '-';
 		const string _boardSeparator = "##";
 
 		public EventLogger(string fileName)
