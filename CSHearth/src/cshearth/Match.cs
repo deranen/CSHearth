@@ -21,8 +21,6 @@ namespace CSHearth
 
 		public void StartGame()
 		{
-			Console.WriteLine( "The seed for this match is: " + Session.Seed );
-
 			_playerOne.Deck.Shuffle();
 			_playerTwo.Deck.Shuffle();
 
@@ -77,6 +75,8 @@ namespace CSHearth
 
 			EventLogger simulationLogger = new EventLogger( "SimulationLog.txt", false );
 
+			simulationLogger.LogLine( "The seed for this match is: " + Session.Seed );
+
 			int turnsTaken = 0;
 
 			simulationLogger.LogGameState( currentTurn );
@@ -118,6 +118,8 @@ namespace CSHearth
 		int StartReplay( GameState gs, List<Action> actionList )
 		{
 			EventLogger eventLogger = new EventLogger( "GameLog.txt" );
+
+			eventLogger.LogLine( "The seed for this match is: " + Session.Seed );
 
 			eventLogger.LogGameState( gs );
 
