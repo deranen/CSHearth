@@ -82,7 +82,7 @@ namespace CSHearth
 
 				++turnsTaken;
 
-				Debug.Assert( turnsTaken > 200 );
+				Debug.Assert( turnsTaken < 200 );
 
 				Console.WriteLine("Variations simulated: " + _gameLogic.VariationsSimulated);
 
@@ -112,32 +112,42 @@ namespace CSHearth
 		{
 			EventLogger eventLogger = new EventLogger( "GameLog.txt" );
 
+			Console.Clear();
 			eventLogger.LogGameState( gs );
+			Console.ReadKey();
 
 			_gameLogic.StartOfTurn( gs );
+
+			Console.Clear();
+			eventLogger.LogGameState( gs );
+			Console.ReadKey();
 
 			foreach( Action action in actionList )
 			{
 				action.PerformAction( gs );
 
-				eventLogger.LogGameState( gs );
+				Console.ReadKey();
 
 				bool p1IsDead = gs.GetPlayer(_playerOne.Tag).IsDead();
 				bool p2IsDead = gs.GetPlayer(_playerTwo.Tag).IsDead();
 
 				if( p1IsDead || p2IsDead )
 				{
+					Console.Clear();
+					eventLogger.LogGameState( gs );
+					Console.ReadKey();
+
 					if( p1IsDead && p2IsDead ) {
 //						Log.Log( "Both players died. It's a draw." );
 						return 0;
 					}
 					else if( p1IsDead ) {
 //						Log.Log( "Player one died. Player two is victorious!" );
-						return 1;
+						return 2;
 					}
 					else if( p2IsDead ) {
 //						Log.Log( "Player two died. Player one is victorious!" );
-						return 2;
+						return 1;
 					}
 				}
 
@@ -147,6 +157,10 @@ namespace CSHearth
 
 					_gameLogic.StartOfTurn( gs );
 				}
+
+				Console.Clear();
+				eventLogger.LogGameState( gs );
+				Console.ReadKey();
 			}
 
 			Debug.Assert( false );
