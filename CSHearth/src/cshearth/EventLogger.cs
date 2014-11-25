@@ -7,22 +7,19 @@ namespace CSHearth
 	{
 		StreamWriter _file;
 
+		bool _enabled;
+		bool _logActions;
+
 		public bool LogToFile    { get; set; }
 		public bool LogToConsole { get; set; }
 
 		public bool Interactive { get; set; }
 
-		bool _logActions;
-
 		const int    _boardWidth     = 40;
 		const char   _separatorChar  = '-';
 		const string _boardSeparator = "##";
 
-		public EventLogger( string fileName ) : this( fileName, true )
-		{
-		}
-
-		public EventLogger( string fileName, bool logActions )
+		public EventLogger( string fileName )
 		{
 			_file = new StreamWriter( fileName, false );
 
@@ -31,11 +28,10 @@ namespace CSHearth
 
 			Interactive = true;
 
-			_logActions  = logActions;
+			_enabled     = true;
+			_logActions  = true;
 
-			if( _logActions ) {
-				RegisterToEvents();
-			}
+			RegisterToEvents();
 		}
 
 		~EventLogger()
@@ -44,6 +40,36 @@ namespace CSHearth
 
 			if( _logActions ) {
 				Detach();
+			}
+		}
+
+		public bool Enabled {
+			get {
+				return _enabled;
+			}
+			set {
+				if( !_enabled && value && _logActions ) {
+					RegisterToEvents();
+				} else if( _enabled && !value && _logActions ) {
+					Detach();
+				}
+
+				_enabled = value;
+			}
+		}
+
+		public bool LogActions {
+			get {
+				return _logActions;
+			}
+			set {
+				if( !_logActions && value && _enabled ) {
+					RegisterToEvents();
+				} else if( _logActions && !value && _enabled ) {
+					Detach();
+				}
+
+				_logActions = value;
 			}
 		}
 
@@ -100,11 +126,17 @@ namespace CSHearth
 
 		void TurnEndedLogger(object sender, EventArgs e)
 		{
+			if( !_logActions )
+				return;
+
 			LogLine( "Turn ended." );
 		}
 
 		void CardPlayedLogger( object sender, CardPlayedEventArgs e )
 		{
+			if( !_logActions )
+				return;
+
 			GameState gs = (GameState) sender;
 
 			string cardName = gs.Me.Hand.GetCard( (int) e.HandPos ).Name;
@@ -134,6 +166,9 @@ namespace CSHearth
 
 		void AttackLogger( object sender, AttackEventArgs e )
 		{
+			if( !_logActions )
+				return;
+
 			GameState gs = (GameState) sender;
 
 			string attackerName;
@@ -157,6 +192,9 @@ namespace CSHearth
 
 		public void LogGameState( GameState gs )
 		{
+			if( !_enabled )
+				return;
+
 			if( Interactive ) {
 				Console.Clear();
 			}

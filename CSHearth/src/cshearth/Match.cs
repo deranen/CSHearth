@@ -6,10 +6,10 @@ namespace CSHearth
 {
 	public class Match
 	{
-		Player _playerOne;
-		Player _playerTwo;
+		readonly Player _playerOne;
+		readonly Player _playerTwo;
 
-		GameLogic _gameLogic;
+		readonly GameLogic _gameLogic;
 
 		public Match( Player playerOne, Player playerTwo, IArtificalIntelligence ai )
 		{
@@ -56,24 +56,16 @@ namespace CSHearth
 
 			List<Action> gameActionList = PlayGame( gameState.Clone() );
 
-			int result = StartReplay( gameState.Clone(), gameActionList );
-
-			if( result == 0 ) {
-				Console.WriteLine("The game is a draw!");
-			}
-			else if( result == 1 ) {
-				Console.WriteLine("Player one wins!");
-			}
-			else if( result == 2 ){
-				Console.WriteLine("Player two wins!");
-			}
+			StartReplay( gameState.Clone(), gameActionList );
 		}
 
 		List<Action> PlayGame( GameState currentTurn )
 		{
 			var gameActionList = new List<Action>();
 
-			EventLogger simulationLogger = new EventLogger( "SimulationLog.txt", false );
+			EventLogger simulationLogger = new EventLogger( "SimulationLog.txt" );
+			simulationLogger.LogActions = false;
+			simulationLogger.Enabled = false;
 
 			simulationLogger.LogLine( "The seed for this match is: " + Session.Seed );
 
@@ -143,16 +135,16 @@ namespace CSHearth
 					eventLogger.LogGameState( gs );
 
 					if( p1IsDead && p2IsDead ) {
-//						Log.Log( "Both players died. It's a draw." );
+						eventLogger.LogLine( "The game is a draw!" );
 						return 0;
 					}
-					else if( p1IsDead ) {
-//						Log.Log( "Player one died. Player two is victorious!" );
-						return 2;
-					}
 					else if( p2IsDead ) {
-//						Log.Log( "Player two died. Player one is victorious!" );
+						eventLogger.LogLine( "Player one wins!" );
 						return 1;
+					}
+					else if( p1IsDead ) {
+						eventLogger.LogLine( "Player two wins!" );
+						return 2;
 					}
 				}
 
