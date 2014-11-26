@@ -9,7 +9,10 @@ namespace CSHearth
 		public Player Opponent { get; private set; }
 		public Board  Board    { get; private set; }
 
-		public GameEventHandler Events { get; private set; }
+		public GameEventHandler EventsPersistent    { get; private set; }
+		public GameEventHandler EventsNonPersistent { get; private set; }
+
+		public GameEventHandlerHelper Events { get; private set; }
 
 		public bool TurnEnded { get; set; }
 
@@ -21,7 +24,10 @@ namespace CSHearth
 			Opponent = opponent;
 			Board    = new Board();
 
-			Events = new GameEventHandler();
+			EventsPersistent    = new GameEventHandler();
+			EventsNonPersistent = new GameEventHandler();
+
+			Events = new GameEventHandlerHelper( this );
 
 			TurnEnded = false;
 
@@ -42,6 +48,13 @@ namespace CSHearth
 				clone.TurnActionList[i] = TurnActionList[i].Clone();
 			}
 
+			clone.EventsNonPersistent = new GameEventHandler();
+			clone.Events = new GameEventHandlerHelper( clone );
+
+			foreach( Minion clonedMinion in clone.Board.GetMinions() ) {
+				clonedMinion.RegisterToEvents( clone.EventsNonPersistent );
+			}
+
 			return clone;
 		}
 
@@ -55,6 +68,33 @@ namespace CSHearth
 			Player temp = Me;
 			Me = Opponent;
 			Opponent = temp;
+		}
+
+		public class GameEventHandlerHelper
+		{
+			readonly GameState _gs;
+
+			public GameEventHandlerHelper( GameState gs ) {
+				_gs = gs;
+			}
+
+			public void OnTurnEnded( GameState gs, EventArgs e )
+			{
+				_gs.EventsPersistent.OnTurnEnded( gs, e );
+				_gs.EventsNonPersistent.OnTurnEnded( gs, e );
+			}
+
+			public void OnAttack( GameState gs, AttackEventArgs e )
+			{
+				_gs.EventsPersistent.OnAttack( gs, e );
+				_gs.EventsNonPersistent.OnAttack( gs, e );
+			}
+
+			public void OnCardPlayed( GameState gs, CardPlayedEventArgs e )
+			{
+				_gs.EventsPersistent.OnCardPlayed( gs, e );
+				_gs.EventsNonPersistent.OnCardPlayed( gs, e );
+			}
 		}
 	}
 }

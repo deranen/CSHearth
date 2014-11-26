@@ -10,6 +10,14 @@ namespace CSHearth
 
 	public enum Target { None, Needed, Forced }
 
+	[Flags]
+	public enum EventRegistration {
+		None            = 0,
+		TurnEndedEvent  = 1,
+		CardPlayedEvent = 2,
+		AttackEvent     = 4,
+	}
+
 	public abstract class Card
 	{
 		public int Id { get; private set; }
@@ -20,6 +28,8 @@ namespace CSHearth
 
 		public Target Target { get; private set; }
 
+		protected EventRegistration EventsRegistered { get; set; }
+
 		protected Card( string name, int cost)
 		{
 			Id    = Session.GetUniqueId();
@@ -27,7 +37,8 @@ namespace CSHearth
 			Class = CardClass.Neutral;
 			Cost  = cost;
 
-			Target = Target.None;
+			EventsRegistered = EventRegistration.None;
+			Target           = Target.None;
 		}
 
 		public virtual Card Clone()
@@ -35,6 +46,22 @@ namespace CSHearth
 			Card card = (Card) MemberwiseClone();
 
 			return card;
+		}
+
+		public void RegisterToEvents( GameEventHandler eh )
+		{
+			if( EventsRegistered.HasFlag( EventRegistration.TurnEndedEvent ) )
+				eh.TurnEnded += HandleTurnEnded;
+		}
+
+		public void DeregisterFromEvents( GameEventHandler eh )
+		{
+			if( EventsRegistered.HasFlag( EventRegistration.TurnEndedEvent ) )
+				eh.TurnEnded -= HandleTurnEnded;
+		}
+
+		protected virtual void HandleTurnEnded( object sender, EventArgs e )
+		{
 		}
 
 		public virtual bool CanTarget( Card card )

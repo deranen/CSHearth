@@ -183,7 +183,7 @@ namespace CSHearth
 
 			string defenderName;
 			if( e.HeroDefends() ) {
-				defenderName = gs.Opponent.Hero.Name;
+				defenderName = "the enemy hero";
 			} else {
 				defenderName = gs.Board.GetMinion( gs.Opponent, (int) e.DefenderBoardPos ).Name;
 				defenderName += "[" + e.DefenderBoardPos + "]";

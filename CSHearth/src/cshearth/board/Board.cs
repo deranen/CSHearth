@@ -47,10 +47,24 @@ namespace CSHearth
 			return clone;
 		}
 
+		public List<Minion> GetMinions()
+		{
+			return _orderPlayedList;
+		}
+
 		public List<Minion> GetMinions( Player player )
 		{
 			int idx = (int) player.Tag;
 			return _positionList[idx];
+		}
+
+		public Minion GetMinion( int minionId )
+		{
+			Minion minion = _orderPlayedList.Find( m => m.Id == minionId );
+
+			Debug.Assert( minion != null );
+
+			return minion;
 		}
 
 		public Minion GetMinion( Player player, int minionPos )
@@ -79,21 +93,25 @@ namespace CSHearth
 			return _positionList[idx].Count;
 		}
 
-		public void PutMinion( Minion minion, int boardPos, Player player )
+		public void PutMinion( Minion minion, int boardPos, Player player, GameEventHandler eh )
 		{
 			minion.Controller = player.Tag;
 			int idx = (int) player.Tag;
 
 			_positionList[idx].Insert( boardPos, minion );
 			_orderPlayedList.Add( minion );
+
+			minion.RegisterToEvents( eh );
 		}
 
-		public void RemoveMinion( Minion minion )
+		public void RemoveMinion( Minion minion, GameEventHandler eh )
 		{
 			int idx = (int) minion.Controller;
 
 			_positionList[idx].Remove( minion );
 			_orderPlayedList.Remove( minion );
+
+			minion.DeregisterFromEvents( eh );
 		}
 
 		public int GetFreeBoardPositionCount( Player player )
