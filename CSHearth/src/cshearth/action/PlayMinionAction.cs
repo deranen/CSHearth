@@ -22,7 +22,7 @@ namespace CSHearth
 				HandPos = _handPos,
 				BoardPos = _boardPos
 			};
-			Events.OnCardPlayed( gs, eventArgs );
+			gs.Events.OnCardPlayed( gs, eventArgs );
 
 			gs.Me.Mana -= minion.Cost;
 

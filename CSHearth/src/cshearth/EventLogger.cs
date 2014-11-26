@@ -5,6 +5,7 @@ namespace CSHearth
 {
 	public class EventLogger
 	{
+		GameEventHandler _eventHandler;
 		StreamWriter _file;
 
 		bool _enabled;
@@ -19,8 +20,9 @@ namespace CSHearth
 		const char   _separatorChar  = '-';
 		const string _boardSeparator = "##";
 
-		public EventLogger( string fileName )
+		public EventLogger( GameEventHandler eventHandler, string fileName )
 		{
+			_eventHandler = eventHandler;
 			_file = new StreamWriter( fileName, false );
 
 			LogToFile    = true;
@@ -28,8 +30,8 @@ namespace CSHearth
 
 			Interactive = true;
 
-			_enabled     = true;
-			_logActions  = true;
+			_enabled    = true;
+			_logActions = true;
 
 			RegisterToEvents();
 		}
@@ -112,16 +114,16 @@ namespace CSHearth
 
 		void RegisterToEvents()
 		{
-			Events.TurnEnded  += TurnEndedLogger;
-			Events.CardPlayed += CardPlayedLogger;
-			Events.Attack     += AttackLogger;
+			_eventHandler.TurnEnded  += TurnEndedLogger;
+			_eventHandler.CardPlayed += CardPlayedLogger;
+			_eventHandler.Attack     += AttackLogger;
 		}
 
 		void Detach()
 		{
-			Events.TurnEnded  -= TurnEndedLogger;
-			Events.CardPlayed -= CardPlayedLogger;
-			Events.Attack     -= AttackLogger;
+			_eventHandler.TurnEnded  -= TurnEndedLogger;
+			_eventHandler.CardPlayed -= CardPlayedLogger;
+			_eventHandler.Attack     -= AttackLogger;
 		}
 
 		void TurnEndedLogger(object sender, EventArgs e)

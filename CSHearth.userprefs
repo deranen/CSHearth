@@ -1,16 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="CSHearth/src/cshearth/EventLogger.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CSHearth/src/cshearth/Events.cs">
     <Files>
-      <File FileName="CSHearth/src/cshearth/Events.cs" Line="32" Column="32" />
-      <File FileName="CSHearth/src/cshearth/EventLogger.cs" Line="3" Column="3" />
-      <File FileName="CSHearth/src/cshearth/Match.cs" Line="5" Column="5" />
-      <File FileName="CSHearth/src/cshearth/action/EndTurnAction.cs" Line="4" Column="4" />
-      <File FileName="CSHearth/src/cshearth/action/AttackHeroWithMinionAction.cs" Line="6" Column="6" />
-      <File FileName="CSHearth/src/cshearth/action/AttackMinionWithMinionAction.cs" Line="6" Column="6" />
-      <File FileName="CSHearth/src/cshearth/board/Board.cs" Line="40" Column="40" />
-      <File FileName="CSHearth/src/cshearth/hero/Hero.cs" Line="1" Column="1" />
-      <File FileName="CSHearth/src/cshearth/hero/HeroTag.cs" Line="2" Column="2" />
+      <File FileName="CSHearth/src/cshearth/Events.cs" Line="3" Column="3" />
+      <File FileName="CSHearth/src/cshearth/EventLogger.cs" Line="4" Column="4" />
+      <File FileName="CSHearth/src/cshearth/Match.cs" Line="40" Column="40" />
+      <File FileName="CSHearth/src/cshearth/decks/ExampleDeck0.txt" Line="9" Column="9" />
+      <File FileName="CSHearth/src/cshearth/decks/ExampleDeck1.txt" Line="1" Column="1" />
+      <File FileName="CSHearth/src/cshearth/Session.cs" Line="3" Column="3" />
+      <File FileName="CSHearth/src/cshearth/action/PlayCardAction.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

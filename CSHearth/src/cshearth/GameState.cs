@@ -9,6 +9,8 @@ namespace CSHearth
 		public Player Opponent { get; private set; }
 		public Board  Board    { get; private set; }
 
+		public GameEventHandler Events { get; private set; }
+
 		public bool TurnEnded { get; set; }
 
 		public List<Action> TurnActionList { get; private set; }
@@ -18,6 +20,8 @@ namespace CSHearth
 			Me       = me;
 			Opponent = opponent;
 			Board    = new Board();
+
+			Events = new GameEventHandler();
 
 			TurnEnded = false;
 

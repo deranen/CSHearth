@@ -3,25 +3,25 @@ using System.Diagnostics;
 
 namespace CSHearth
 {
-	public static class Events
+	public class GameEventHandler
 	{
-		public static event EventHandler TurnEnded;
-		public static event EventHandler<CardPlayedEventArgs> CardPlayed;
-		public static event EventHandler<AttackEventArgs>     Attack;
+		public event EventHandler TurnEnded;
+		public event EventHandler<CardPlayedEventArgs> CardPlayed;
+		public event EventHandler<AttackEventArgs>     Attack;
 
-		public static void OnTurnEnded( GameState gs, EventArgs e )
+		public void OnTurnEnded( GameState gs, EventArgs e )
 		{
 			if( TurnEnded != null )
 				TurnEnded( gs, e );
 		}
 
-		public static void OnCardPlayed( GameState gs, CardPlayedEventArgs e )
+		public void OnCardPlayed( GameState gs, CardPlayedEventArgs e )
 		{
 			if( CardPlayed != null )
 				CardPlayed( gs, e );
 		}
 
-		public static void OnAttack( GameState gs, AttackEventArgs e )
+		public void OnAttack( GameState gs, AttackEventArgs e )
 		{
 			if( Attack != null )
 				Attack( gs, e );

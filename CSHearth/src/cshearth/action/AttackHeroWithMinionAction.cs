@@ -17,10 +17,10 @@ namespace CSHearth
 			Hero opponentHero = gs.Opponent.Hero;
 
 			var eventArgs = new AttackEventArgs {
-				AttackerBoardPos = _attackerPos,
+				AttackerBoardPos  = _attackerPos,
 				DefenderPlayerTag = gs.Opponent.Tag
 			};
-			Events.OnAttack( gs, eventArgs );
+			gs.Events.OnAttack( gs, eventArgs );
 
 			opponentHero.Health = opponentHero.Health - attacker.Attack;
 			attacker.AttackCount++;

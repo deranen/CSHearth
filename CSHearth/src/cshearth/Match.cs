@@ -59,11 +59,11 @@ namespace CSHearth
 			StartReplay( gameState.Clone(), gameActionList );
 		}
 
-		List<Action> PlayGame( GameState currentTurn )
+		List<Action> PlayGame( GameState gs )
 		{
 			var gameActionList = new List<Action>();
 
-			EventLogger simulationLogger = new EventLogger( "SimulationLog.txt" );
+			EventLogger simulationLogger = new EventLogger( gs.Events, "SimulationLog.txt" );
 			simulationLogger.LogActions = false;
 			simulationLogger.Enabled = false;
 
@@ -71,11 +71,11 @@ namespace CSHearth
 
 			int turnsTaken = 0;
 
-			simulationLogger.LogGameState( currentTurn );
+			simulationLogger.LogGameState( gs );
 
 			while( true )
 			{
-				_gameLogic.PlayTurn( currentTurn );
+				_gameLogic.PlayTurn( gs );
 
 				++turnsTaken;
 
@@ -83,25 +83,23 @@ namespace CSHearth
 
 				Console.WriteLine("Variations simulated: " + _gameLogic.VariationsSimulated);
 
-				GameState endOfTurn = _gameLogic.BestGameState;
+				gs = _gameLogic.BestGameState;
 
-				Debug.Assert( endOfTurn.TurnActionList.Count > 0 );
+				Debug.Assert( gs.TurnActionList.Count > 0 );
 
-				simulationLogger.LogGameState( endOfTurn );
+				simulationLogger.LogGameState( gs );
 
-				gameActionList.AddRange( endOfTurn.TurnActionList );
-				endOfTurn.TurnActionList.Clear();
+				gameActionList.AddRange( gs.TurnActionList );
+				gs.TurnActionList.Clear();
 
-				bool p1IsDead = endOfTurn.GetPlayer(_playerOne.Tag).IsDead();
-				bool p2IsDead = endOfTurn.GetPlayer(_playerTwo.Tag).IsDead();
+				bool p1IsDead = gs.GetPlayer(_playerOne.Tag).IsDead();
+				bool p2IsDead = gs.GetPlayer(_playerTwo.Tag).IsDead();
 
 				if( p1IsDead || p2IsDead ) {
 					break;
 				}
 
-				currentTurn = endOfTurn;
-
-				currentTurn.SwitchTurns();
+				gs.SwitchTurns();
 			}
 
 			return gameActionList;
@@ -109,7 +107,7 @@ namespace CSHearth
 
 		int StartReplay( GameState gs, List<Action> actionList )
 		{
-			EventLogger eventLogger = new EventLogger( "GameLog.txt" );
+			EventLogger eventLogger = new EventLogger( gs.Events, "GameLog.txt" );
 
 			eventLogger.LogLine( "The seed for this match is: " + Session.Seed );
 

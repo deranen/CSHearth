@@ -22,7 +22,7 @@ namespace CSHearth
 				AttackerBoardPos = _attackerPos,
 				DefenderBoardPos = _defenderPos
 			};
-			Events.OnAttack( gs, eventArgs );
+			gs.Events.OnAttack( gs, eventArgs );
 
 			defender.Health -= attacker.Attack;
 			attacker.Health -= defender.Attack;
