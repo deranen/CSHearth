@@ -5,9 +5,16 @@ namespace CSHearth
 {
 	public class GameEventHandler
 	{
-		public event EventHandler                      TurnEnded;
+		public event EventHandler TurnEnded;
 		public event EventHandler<CardPlayedEventArgs> CardPlayed;
 		public event EventHandler<AttackEventArgs>     Attack;
+
+		public GameEventHandler Clone()
+		{
+			GameEventHandler clone = (GameEventHandler) MemberwiseClone();
+
+			return clone;
+		}
 
 		public void OnTurnEnded( GameState gs, EventArgs e )
 		{

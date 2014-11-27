@@ -63,7 +63,7 @@ namespace CSHearth
 		{
 			var gameActionList = new List<Action>();
 
-			EventLogger simulationLogger = new EventLogger( gs.EventsPersistent, "SimulationLog.txt" );
+			EventLogger simulationLogger = new EventLogger( gs.Events, "SimulationLog.txt" );
 			simulationLogger.LogActions = false;
 			simulationLogger.Enabled = false;
 
@@ -107,7 +107,7 @@ namespace CSHearth
 
 		int StartReplay( GameState gs, List<Action> actionList )
 		{
-			EventLogger eventLogger = new EventLogger( gs.EventsPersistent, "GameLog.txt" );
+			EventLogger eventLogger = new EventLogger( gs.Events, "GameLog.txt" );
 
 			eventLogger.LogLine( "The seed for this match is: " + Session.Seed );
 

@@ -29,7 +29,7 @@ namespace CSHearth
 			Debug.Assert( gs.Me.Mana >= 0 );
 
 			gs.Me.Hand.RemoveCard( _handPos );
-			gs.Board.PutMinion( minion, _boardPos, gs.Me, gs.EventsNonPersistent );
+			gs.Board.PutMinion( minion, _boardPos, gs.Me, gs.Events );
 
 			minion.PlayedThisTurn = true;
 		}

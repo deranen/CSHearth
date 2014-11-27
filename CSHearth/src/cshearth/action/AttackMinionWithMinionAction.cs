@@ -30,13 +30,13 @@ namespace CSHearth
 			attacker.AttackCount++;
 
 			if( defender.IsDead() ) {
-				gs.Board.RemoveMinion( defender );
+				gs.Board.RemoveMinion( defender, gs.Events );
 
 				// TODO: Trigger deathrattle
 			}
 
 			if( attacker.IsDead() ) {
-				gs.Board.RemoveMinion( attacker );
+				gs.Board.RemoveMinion( attacker, gs.Events );
 
 				// TODO: Trigger deathrattle
 			}

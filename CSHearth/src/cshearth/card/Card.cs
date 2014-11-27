@@ -11,7 +11,7 @@ namespace CSHearth
 	public enum Target { None, Needed, Forced }
 
 	[Flags]
-	public enum EventRegistration {
+	public enum EventTag {
 		None            = 0,
 		TurnEndedEvent  = 1,
 		CardPlayedEvent = 2,
@@ -28,7 +28,7 @@ namespace CSHearth
 
 		public Target Target { get; private set; }
 
-		protected EventRegistration EventsRegistered { get; set; }
+		protected EventTag RegisteredEvents { get; set; }
 
 		protected Card( string name, int cost)
 		{
@@ -37,7 +37,7 @@ namespace CSHearth
 			Class = CardClass.Neutral;
 			Cost  = cost;
 
-			EventsRegistered = EventRegistration.None;
+			RegisteredEvents = EventTag.None;
 			Target           = Target.None;
 		}
 
@@ -50,18 +50,33 @@ namespace CSHearth
 
 		public void RegisterToEvents( GameEventHandler eh )
 		{
-			if( EventsRegistered.HasFlag( EventRegistration.TurnEndedEvent ) )
+			if( RegisteredEvents.HasFlag( EventTag.TurnEndedEvent ) )
 				eh.TurnEnded += HandleTurnEnded;
+			if( RegisteredEvents.HasFlag( EventTag.CardPlayedEvent ) )
+				eh.CardPlayed += HandleCardPlayed;
+			if( RegisteredEvents.HasFlag( EventTag.AttackEvent ) )
+				eh.Attack += HandleAttack;
 		}
 
 		public void DeregisterFromEvents( GameEventHandler eh )
 		{
-			if( EventsRegistered.HasFlag( EventRegistration.TurnEndedEvent ) )
+			if( RegisteredEvents.HasFlag( EventTag.TurnEndedEvent ) )
 				eh.TurnEnded -= HandleTurnEnded;
 		}
 
 		protected virtual void HandleTurnEnded( object sender, EventArgs e )
 		{
+			throw new NotImplementedException();
+		}
+
+		protected virtual void HandleCardPlayed( object sender, CardPlayedEventArgs e )
+		{
+			throw new NotImplementedException();
+		}
+
+		protected virtual void HandleAttack( object sender, AttackEventArgs e )
+		{
+			throw new NotImplementedException();
 		}
 
 		public virtual bool CanTarget( Card card )
