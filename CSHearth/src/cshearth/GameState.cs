@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Collections;
 
 namespace CSHearth
 {
@@ -13,6 +14,7 @@ namespace CSHearth
 
 		public bool TurnEnded { get; set; }
 
+		public int Depth { get; private set; }
 		public List<Action> TurnActionList { get; private set; }
 
 		public GameState(Player me, Player opponent)
@@ -25,6 +27,7 @@ namespace CSHearth
 
 			TurnEnded = false;
 
+			Depth = 0;
 			TurnActionList = new List<Action>();
 		}
 
@@ -35,6 +38,8 @@ namespace CSHearth
 			clone.Me       = Me.Clone();
 			clone.Opponent = Opponent.Clone();
 			clone.Board    = Board.Clone();
+
+			clone.Depth = Depth + 1;
 
 			clone.TurnActionList = new List<Action>( TurnActionList );
 
@@ -48,15 +53,26 @@ namespace CSHearth
 				oldMinion.DeregisterFromEvents( clone.Events );
 			}
 
-			// TODO: Deregister secrets
+			// TODO: Deregister old secrets
 
 			foreach( Minion newMinion in clone.Board.GetMinions() ) {
 				newMinion.RegisterToEvents( clone.Events );
 			}
 
-			// TODO: Register secrets
+			// TODO: Register new secrets
 
 			return clone;
+		}
+
+		public override int GetHashCode()
+		{
+			int hash = Hasher.InitialHash();
+
+			hash = Hasher.CombineHash( hash, Me.GetHashCode() );
+			hash = Hasher.CombineHash( hash, Opponent.GetHashCode() );
+			hash = Hasher.CombineHash( hash, Board.GetHashCode() );
+
+			return hash;
 		}
 
 		public Player GetPlayer( PlayerTag tag )

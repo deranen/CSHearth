@@ -1,6 +1,7 @@
 ﻿
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace CSHearth
 {
@@ -25,6 +26,17 @@ namespace CSHearth
 			}
 
 			return hand;
+		}
+
+		public override int GetHashCode()
+		{
+			int hash = Hasher.InitialHash();
+
+			foreach( Card card in _cards ) {
+				hash = Hasher.CombineHash( hash, card.GetHashCode() );
+			}
+
+			return hash;
 		}
 
 		public bool Empty

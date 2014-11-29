@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting;
+using System.Collections;
 
 namespace CSHearth
 {
 	public class Deck
 	{
+		// TODO: Make Cards private
 		public List<Card> Cards { get; private set; }
 
 		public Deck()
@@ -36,6 +38,17 @@ namespace CSHearth
 			}
 
 			return deck;
+		}
+
+		public override int GetHashCode()
+		{
+			int hash = Hasher.InitialHash();
+
+			foreach( Card card in Cards ) {
+				hash = Hasher.CombineHash( hash, card.GetHashCode() );
+			}
+
+			return hash;
 		}
 
 		public bool IsEmpty()

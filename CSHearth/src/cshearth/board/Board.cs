@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace CSHearth
 {
@@ -45,6 +46,25 @@ namespace CSHearth
 			}
 
 			return clone;
+		}
+
+		public override int GetHashCode()
+		{
+			int hash = Hasher.InitialHash();
+
+			foreach( Minion minion in _orderPlayedList ) {
+				hash = Hasher.CombineHash( hash, minion.GetHashCode() );
+			}
+
+			foreach( Minion minion in _positionList[0] ) {
+				hash = Hasher.CombineHash( hash, minion.GetHashCode() );
+			}
+
+			foreach( Minion minion in _positionList[1] ) {
+				hash = Hasher.CombineHash( hash, minion.GetHashCode() );
+			}
+
+			return hash;
 		}
 
 		public List<Minion> GetMinions()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 
 namespace CSHearth
 {
@@ -43,6 +44,25 @@ namespace CSHearth
 			Minion clone = (Minion) base.Clone();
 
 			return clone;
+		}
+
+		public override int GetHashCode()
+		{
+			int hash = Hasher.InitialHash();
+
+			hash = Hasher.CombineHash( hash, base.GetHashCode() );
+
+			hash = Hasher.CombineHash( hash, Type.GetHashCode() );
+			hash = Hasher.CombineHash( hash, BaseAttack.GetHashCode() );
+			hash = Hasher.CombineHash( hash, BaseHealth.GetHashCode() );
+			hash = Hasher.CombineHash( hash, Attack.GetHashCode() );
+			hash = Hasher.CombineHash( hash, Health.GetHashCode() );
+			hash = Hasher.CombineHash( hash, MaxHealth.GetHashCode() );
+			hash = Hasher.CombineHash( hash, Controller.GetHashCode() );
+			hash = Hasher.CombineHash( hash, AttackCount.GetHashCode() );
+			hash = Hasher.CombineHash( hash, PlayedThisTurn.GetHashCode() );
+
+			return hash;
 		}
 
 		public bool IsControlledBy( Player player )

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 
 namespace CSHearth
 {
@@ -32,6 +33,20 @@ namespace CSHearth
 			clone.Hand = Hand.Clone();
 
 			return clone;
+		}
+
+		public override int GetHashCode()
+		{
+			// TODO: Consider not hashing Deck for performance reasons
+			int hash = Hasher.InitialHash();
+
+			hash = Hasher.CombineHash( hash, Hero.GetHashCode() );
+			hash = Hasher.CombineHash( hash, Deck.GetHashCode() );
+			hash = Hasher.CombineHash( hash, Hand.GetHashCode() );
+			hash = Hasher.CombineHash( hash, Mana.GetHashCode() );
+			hash = Hasher.CombineHash( hash, MaxMana.GetHashCode() );
+
+			return hash;
 		}
 
 		public void IncreaseMaxMana()

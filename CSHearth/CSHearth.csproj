@@ -80,6 +80,7 @@
     <Compile Include="src\cshearth\ai\BasicAI.cs" />
     <Compile Include="src\cshearth\EventLogger.cs" />
     <Compile Include="src\cshearth\GameEventHandler.cs" />
+    <Compile Include="src\cshearth\Hasher.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

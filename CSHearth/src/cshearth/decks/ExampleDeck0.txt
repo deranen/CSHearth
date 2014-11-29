@@ -1,2 +1,1 @@
-﻿2 : Chillwind Yeti
-2 : Wisp
+﻿8 : Wisp

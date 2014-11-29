@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Collections;
 
 namespace CSHearth
 {
@@ -46,6 +47,16 @@ namespace CSHearth
 			Card card = (Card) MemberwiseClone();
 
 			return card;
+		}
+
+		public override int GetHashCode()
+		{
+			int hash = Hasher.InitialHash();
+
+			hash = Hasher.CombineHash( hash, Cost.GetHashCode() );
+			hash = Hasher.CombineHash( hash, RegisteredEvents.GetHashCode() );
+
+			return hash;
 		}
 
 		public void RegisterToEvents( GameEventHandler eh )

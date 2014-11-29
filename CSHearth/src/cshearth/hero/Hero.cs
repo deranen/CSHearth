@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Collections;
 
 namespace CSHearth
 {
@@ -37,6 +38,18 @@ namespace CSHearth
 			Hero clone = (Hero) MemberwiseClone();
 
 			return clone;
+		}
+
+		public override int GetHashCode()
+		{
+			int hash = Hasher.InitialHash();
+
+			hash = Hasher.CombineHash( hash, Health.GetHashCode() );
+			hash = Hasher.CombineHash( hash, Armor.GetHashCode() );
+			hash = Hasher.CombineHash( hash, Attack.GetHashCode() );
+			hash = Hasher.CombineHash( hash, AttackCount.GetHashCode() );
+
+			return hash;
 		}
 
 		public bool IsDead()

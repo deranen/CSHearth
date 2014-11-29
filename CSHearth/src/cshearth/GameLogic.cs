@@ -6,6 +6,8 @@ namespace CSHearth
 	{
 		IArtificalIntelligence _ai;
 
+		HashSet<int> _gameStateHashes;
+
 		public double    BestScore     { get; private set; }
 		public GameState BestGameState { get; private set; }
 
@@ -14,6 +16,8 @@ namespace CSHearth
 		public GameLogic( IArtificalIntelligence ai )
 		{
 			_ai = ai;
+
+			_gameStateHashes = new HashSet<int>();
 
 			BestScore     = double.NegativeInfinity;
 			BestGameState = null;
@@ -25,6 +29,8 @@ namespace CSHearth
 		{
 			BestScore     = double.NegativeInfinity;
 			BestGameState = null;
+
+			_gameStateHashes.Clear();
 
 			VariationsSimulated = 0;
 
@@ -62,7 +68,16 @@ namespace CSHearth
 
 				return;
 			}
-			else {
+
+			int hash = gs.GetHashCode();
+
+			if( _gameStateHashes.Contains( hash ) ) {
+				return;
+			}
+
+			_gameStateHashes.Add( hash );
+
+			{
 				Action action = new EndTurnAction();
 
 				PerformAction( action, gs );

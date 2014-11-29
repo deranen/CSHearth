@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Timers;
 
 namespace CSHearth
 {
@@ -54,9 +55,16 @@ namespace CSHearth
 
 			GameState gameState = new GameState(goesFirst, goesSecond);
 
+			Stopwatch stopwatch = new Stopwatch();
+			stopwatch.Start();
+
 			List<Action> gameActionList = PlayGame( gameState.Clone() );
 
-			StartReplay( gameState.Clone(), gameActionList );
+			stopwatch.Stop();
+
+			Console.WriteLine( "Simulation time: " + stopwatch.Elapsed );
+
+			//StartReplay( gameState.Clone(), gameActionList );
 		}
 
 		List<Action> PlayGame( GameState gs )
