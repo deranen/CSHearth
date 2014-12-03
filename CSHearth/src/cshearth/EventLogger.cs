@@ -38,6 +38,7 @@ namespace CSHearth
 
 		~EventLogger()
 		{
+			_file.Flush();
 			_file.Close();
 
 			if( _logActions ) {
@@ -192,6 +193,8 @@ namespace CSHearth
 			LogLine( attackerName + " attacks " + defenderName + "." );
 		}
 
+		#region GameStateLogging
+
 		public void LogGameState( GameState gs )
 		{
 			if( !_enabled )
@@ -230,7 +233,7 @@ namespace CSHearth
 		{
 			Hero playerHero = gs.GetPlayer( playerTag ).Hero;
 
-			string heroClass  = playerHero.Tag.ToString();
+			string heroClass = playerHero.Tag.ToString();
 			string heroHealth = playerHero.Health.ToString();
 			string heroString = string.Format( "{0} ({1})", heroClass, heroHealth );
 
@@ -259,7 +262,7 @@ namespace CSHearth
 		{
 			Player player = gs.GetPlayer( playerTag );
 
-			int mana    = player.Mana;
+			int mana = player.Mana;
 			int maxMana = player.MaxMana;
 
 			string manaString = string.Format( "({0}/{1}) ", mana, maxMana );
@@ -382,10 +385,11 @@ namespace CSHearth
 		{
 			return
 				s1.PadRight( _boardWidth, padding ) +
-				_boardSeparator +
-				s2.PadLeft( _boardWidth, padding );
+			_boardSeparator +
+			s2.PadLeft( _boardWidth, padding );
 		}
 
+		#endregion
 
 	}
 }

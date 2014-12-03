@@ -1,1 +1,7 @@
-﻿8 : Wisp
+﻿2 : Chillwind Yeti
+2 : Wisp
+2 : Core Hound
+2 : Bloodfen Raptor
+2 : Boulderfist Ogre
+2 : Magma Rager
+2 : Murloc Raider

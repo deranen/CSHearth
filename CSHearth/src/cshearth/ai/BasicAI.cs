@@ -6,11 +6,21 @@ namespace CSHearth
 	{
 		public double CalculateScore( GameState gs )
 		{
-			int oppoMaxHealth = gs.Opponent.Hero.MaxHealth;
-			int oppoHealth    = gs.Opponent.Hero.Health;
+			int oppoHealth = gs.Opponent.Hero.Health;
+
+			if( oppoHealth <= 0 ) {
+				return double.MaxValue;
+			}
+
+			int myHealth = gs.Me.Hero.Health;
+
+			if( myHealth <= 0 ) {
+				return double.MinValue;
+			}
+
 			int myMinionCount = gs.Board.GetMinionCount( gs.Me );
 
-			return (oppoMaxHealth - oppoHealth) + myMinionCount;
+			return myHealth + myMinionCount - oppoHealth;
 		}
 
 

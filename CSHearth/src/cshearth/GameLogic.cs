@@ -59,7 +59,10 @@ namespace CSHearth
 			{
 				double score = _ai.CalculateScore( gs );
 
-				if( score > BestScore ) {
+				if( score > BestScore ||
+					(score == BestScore &&
+						gs.TurnActionList.Count < BestGameState.TurnActionList.Count ) )
+				{
 					BestScore     = score;
 					BestGameState = gs;
 				}
@@ -71,11 +74,9 @@ namespace CSHearth
 
 			int hash = gs.GetHashCode();
 
-			if( _gameStateHashes.Contains( hash ) ) {
+			if( !_gameStateHashes.Add( hash ) ) {
 				return;
 			}
-
-			_gameStateHashes.Add( hash );
 
 			{
 				Action action = new EndTurnAction();

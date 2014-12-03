@@ -31,6 +31,9 @@ namespace CSHearth
 
 		protected EventTag RegisteredEvents { get; set; }
 
+		protected int Hash;
+		protected bool HashUpToDate;
+
 		protected Card( string name, int cost)
 		{
 			Id    = Session.GetUniqueId();
@@ -40,6 +43,8 @@ namespace CSHearth
 
 			RegisteredEvents = EventTag.None;
 			Target           = Target.None;
+
+			HashUpToDate = false;
 		}
 
 		public virtual Card Clone()
@@ -51,10 +56,17 @@ namespace CSHearth
 
 		public override int GetHashCode()
 		{
+			if( HashUpToDate ) {
+				return Hash;
+			}
+
 			int hash = Hasher.InitialHash();
 
 			hash = Hasher.CombineHash( hash, Cost.GetHashCode() );
 			hash = Hasher.CombineHash( hash, RegisteredEvents.GetHashCode() );
+
+			Hash = hash;
+			HashUpToDate = true;
 
 			return hash;
 		}

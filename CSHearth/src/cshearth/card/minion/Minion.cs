@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-
+﻿
 namespace CSHearth
 {
 	public abstract class Minion : Card
@@ -10,14 +8,62 @@ namespace CSHearth
 		public int BaseAttack { get; private set; }
 		public int BaseHealth { get; private set; }
 
-		public int Attack    { get; set; }
-		public int Health    { get; set; }
-		public int MaxHealth { get; set; }
+		int _attack;
+		int _health;
+		int _maxHealth;
 
-		public PlayerTag Controller { get; set; }
+		PlayerTag _controller;
 
-		public int  AttackCount    { get; set; }
-		public bool PlayedThisTurn { get; set; }
+		int _attackCount;
+		bool _playedThisTurn;
+
+		public int Attack {
+			get { return _attack; }
+			set {
+				HashUpToDate = false;
+				_attack = value;
+			}
+		}
+
+		public int Health {
+			get { return _health; }
+			set {
+				HashUpToDate = false;
+				_health = value;
+			}
+		}
+
+		public int MaxHealth {
+			get { return _maxHealth; }
+			set {
+				HashUpToDate = false;
+				_maxHealth = value;
+			}
+		}
+
+		public PlayerTag Controller {
+			get { return _controller; }
+			set {
+				HashUpToDate = false;
+				_controller = value;
+			}
+		}
+
+		public int AttackCount {
+			get { return _attackCount; }
+			set {
+				HashUpToDate = false;
+				_attackCount = value;
+			}
+		}
+
+		public bool PlayedThisTurn {
+			get { return _playedThisTurn; }
+			set {
+				HashUpToDate = false;
+				_playedThisTurn = value;
+			}
+		}
 
 		protected Minion(
 			string     name,
@@ -48,6 +94,10 @@ namespace CSHearth
 
 		public override int GetHashCode()
 		{
+			if( HashUpToDate ) {
+				return Hash;
+			}
+
 			int hash = Hasher.InitialHash();
 
 			hash = Hasher.CombineHash( hash, base.GetHashCode() );
@@ -61,6 +111,9 @@ namespace CSHearth
 			hash = Hasher.CombineHash( hash, Controller.GetHashCode() );
 			hash = Hasher.CombineHash( hash, AttackCount.GetHashCode() );
 			hash = Hasher.CombineHash( hash, PlayedThisTurn.GetHashCode() );
+
+			Hash = hash;
+			HashUpToDate = true;
 
 			return hash;
 		}

@@ -55,6 +55,8 @@ namespace CSHearth
 
 			GameState gameState = new GameState(goesFirst, goesSecond);
 
+			Session.Stopwatch.Start();
+
 			Stopwatch stopwatch = new Stopwatch();
 			stopwatch.Start();
 
@@ -62,9 +64,13 @@ namespace CSHearth
 
 			stopwatch.Stop();
 
+			Session.Stopwatch.Stop();
+
 			Console.WriteLine( "Simulation time: " + stopwatch.Elapsed );
 
-			//StartReplay( gameState.Clone(), gameActionList );
+			//Console.WriteLine( "Simulation time (without hashing): " + Session.Stopwatch.Elapsed );
+
+			StartReplay( gameState.Clone(), gameActionList );
 		}
 
 		List<Action> PlayGame( GameState gs )
