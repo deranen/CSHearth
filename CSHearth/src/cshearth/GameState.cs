@@ -13,8 +13,15 @@ namespace CSHearth
 
 		public bool TurnEnded { get; set; }
 
-		public int Depth { get; private set; }
+		public bool SimulatingResponse { get; set; }
+
 		public List<Action> TurnActionList { get; private set; }
+
+		public int Depth {
+			get {
+				return TurnActionList.Count;
+			}
+		}
 
 		public GameState(Player me, Player opponent)
 		{
@@ -26,7 +33,8 @@ namespace CSHearth
 
 			TurnEnded = false;
 
-			Depth = 0;
+			SimulatingResponse = false;
+
 			TurnActionList = new List<Action>();
 		}
 
@@ -37,8 +45,6 @@ namespace CSHearth
 			clone.Me       = Me.Clone();
 			clone.Opponent = Opponent.Clone();
 			clone.Board    = Board.Clone();
-
-			clone.Depth = Depth + 1;
 
 			clone.TurnActionList = new List<Action>( TurnActionList );
 

@@ -7,9 +7,12 @@ namespace CSHearth
 		IArtificalIntelligence _ai;
 
 		HashSet<int> _gameStateHashes;
+		HashSet<int> _responseHashes;
 
 		public double    BestScore     { get; private set; }
 		public GameState BestGameState { get; private set; }
+
+		public double BestResponseScore { get; private set; }
 
 		public int VariationsSimulated { get; private set; }
 
@@ -18,6 +21,7 @@ namespace CSHearth
 			_ai = ai;
 
 			_gameStateHashes = new HashSet<int>();
+			_responseHashes = new HashSet<int>();
 
 			BestScore     = double.NegativeInfinity;
 			BestGameState = null;
@@ -27,12 +31,15 @@ namespace CSHearth
 
 		public void StartOfTurn( GameState gs )
 		{
-			BestScore     = double.NegativeInfinity;
-			BestGameState = null;
+			if( !gs.SimulatingResponse )
+			{
+				BestScore = double.NegativeInfinity;
+				BestGameState = null;
 
-			_gameStateHashes.Clear();
+				_gameStateHashes.Clear();
 
-			VariationsSimulated = 0;
+				VariationsSimulated = 0;
+			}
 
 			gs.TurnEnded = false;
 
@@ -57,33 +64,84 @@ namespace CSHearth
 		{
 			if( gs.TurnEnded || gs.Me.IsDead() || gs.Opponent.IsDead() )
 			{
-				double score = _ai.CalculateScore( gs );
-
-				if( score > BestScore ||
-					(score == BestScore &&
-						gs.TurnActionList.Count < BestGameState.TurnActionList.Count ) )
+				if( !gs.SimulatingResponse &&
+					!gs.Me.IsDead() && !gs.Opponent.IsDead() )
 				{
-					BestScore     = score;
-					BestGameState = gs;
-				}
+					// Simulate opponents response
+					double scoreBefore = BestScore;
 
-				++VariationsSimulated;
+					_responseHashes.Clear();
+
+					GameState oppoTurn = gs.Clone();
+
+					oppoTurn.SimulatingResponse = true;
+					oppoTurn.SwitchTurns();
+					PlayTurn( oppoTurn );
+
+					_responseHashes.Clear();
+
+					double scoreAfter = BestScore;
+
+					if( scoreAfter > scoreBefore ) {
+						BestGameState = gs;
+					}
+				} else {
+					double score = _ai.CalculateScore( gs );
+
+					// If we are simulating the response of the opponent
+					// the score value is from the perspective of the opponent.
+					// To get our score we need to negate its value
+					if( gs.SimulatingResponse ) {
+						score = -score;
+					}
+
+					if( score > BestScore )
+					{
+						BestScore = score;
+
+						if( !gs.SimulatingResponse ) {
+							BestGameState = gs;
+						}
+					}
+
+					++VariationsSimulated;
+				}
 
 				return;
 			}
 
 			int hash = gs.GetHashCode();
 
-			if( !_gameStateHashes.Add( hash ) ) {
-				return;
+			if( gs.SimulatingResponse ) {
+				if( !_responseHashes.Add( hash ) ) {
+					return;
+				}
+			} else {
+				if( !_gameStateHashes.Add( hash ) ) {
+					return;
+				}
 			}
 
-			{
-				Action action = new EndTurnAction();
+			SimulateEndTurn( gs );
 
-				PerformAction( action, gs );
+			SimulateAttackWithMinions( gs );
+
+			// We don't simulate playing cards when simulating
+			// the opponent's response to your ending board state
+			if( !gs.SimulatingResponse ) {
+				SimulatePlayCards( gs );
 			}
 
+		}
+
+		void SimulateEndTurn( GameState gs )
+		{
+			Action action = new EndTurnAction();
+			PerformAction( action, gs );
+		}
+
+		void SimulateAttackWithMinions( GameState gs )
+		{
 			int myMinionCount = gs.Board.GetMinionCount( gs.Me );
 
 			for( int myMinionPos = 0; myMinionPos < myMinionCount; ++myMinionPos )
@@ -103,7 +161,6 @@ namespace CSHearth
 					// TODO: Handle taunt
 
 					Action action = new AttackMinionWithMinionAction( myMinionPos, oppoMinionPos );
-
 					PerformAction( action, gs );
 				}
 
@@ -111,11 +168,13 @@ namespace CSHearth
 
 				{
 					Action action = new AttackHeroWithMinionAction( myMinionPos );
-
 					PerformAction( action, gs );
 				}
 			}
+		}
 
+		void SimulatePlayCards( GameState gs )
+		{
 			int cardCount = gs.Me.Hand.CardCount;
 
 			for( int handPos = 0; handPos < cardCount; ++handPos )
@@ -136,8 +195,7 @@ namespace CSHearth
 					availableTargets += TargetHero( card, handPos, gs.Me, gs );
 					availableTargets += TargetHero( card, handPos, gs.Opponent, gs );
 
-					if( availableTargets == 0 && card.Target != Target.Forced )
-					{
+					if( availableTargets == 0 && card.Target != Target.Forced ) {
 						PlayCardWithoutTarget( card, handPos, gs );
 					}
 				}

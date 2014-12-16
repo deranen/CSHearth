@@ -21,9 +21,12 @@ namespace CSHearth
 			int myMinionCount = gs.Board.GetMinionCount( gs.Me );
 			int oppoMinionCount = gs.Board.GetMinionCount( gs.Opponent );
 
-			double boardControlFactor = 1.0;
+			double myBoardControlFactor = 1.0;
+			double oppoBoardControlFactor = 1.0;
 			if( myMinionCount > 0 && oppoMinionCount == 0 ) {
-				boardControlFactor = 1.5;
+				myBoardControlFactor = 1.5;
+			} else if( oppoMinionCount > 0 && myMinionCount == 0 ) {
+				oppoBoardControlFactor = 1.5;
 			}
 
 			double oppoMinionValue = 0.0;
@@ -37,8 +40,10 @@ namespace CSHearth
 			}
 
 			double healthScore = 0.5 * (myHealth - oppoHealth);
-			double minionScore = myMinionValue - oppoMinionValue;
-			minionScore *= boardControlFactor;
+			double myMinionScore   = myBoardControlFactor * myMinionValue;
+			double oppoMinionScore = oppoBoardControlFactor * oppoMinionValue;
+
+			double minionScore = myMinionScore - oppoMinionScore;
 
 			return healthScore + minionScore;
 		}

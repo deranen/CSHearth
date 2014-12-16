@@ -1,16 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="CSHearth/src/cshearth/card/minion/concrete/ChillwindYeti.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CSHearth/src/cshearth/GameLogic.cs">
     <Files>
-      <File FileName="CSHearth/src/cshearth/GameEventHandler.cs" Line="4" Column="4" />
-      <File FileName="CSHearth/src/cshearth/EventLogger.cs" Line="1" Column="1" />
       <File FileName="CSHearth/src/cshearth/Match.cs" Line="1" Column="1" />
-      <File FileName="CSHearth/src/cshearth/GameState.cs" Line="5" Column="5" />
-      <File FileName="CSHearth/src/cshearth/card/Card.cs" Line="4" Column="4" />
-      <File FileName="CSHearth/src/cshearth/action/AttackHeroWithMinionAction.cs" Line="1" Column="1" />
-      <File FileName="CSHearth/src/cshearth/action/PlayCardAction.cs" Line="1" Column="1" />
-      <File FileName="CSHearth/src/cshearth/board/Board.cs" Line="4" Column="4" />
-      <File FileName="CSHearth/src/cshearth/card/minion/concrete/ChillwindYeti.cs" Line="3" Column="3" />
+      <File FileName="CSHearth/src/cshearth/GameLogic.cs" Line="56" Column="56" />
+      <File FileName="CSHearth/src/cshearth/GameState.cs" Line="4" Column="4" />
+      <File FileName="CSHearth/src/cshearth/decks/ExampleDeck0.txt" Line="16" Column="16" />
+      <File FileName="CSHearth/src/cshearth/card/Card.cs" Line="1" Column="1" />
+      <File FileName="CSHearth/src/cshearth/card/minion/Minion.cs" Line="46" Column="46" />
+      <File FileName="CSHearth/src/Program.cs" Line="29" Column="29" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

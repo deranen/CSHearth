@@ -7,6 +7,8 @@ namespace CSHearth
 	{
 		public static void Main (string[] args)
 		{
+			Session.Seed = 470966725;
+
 			Hero heroJaina = new JainaProudmoore();
 			Hero heroUther = new UtherLightbringer();
 
